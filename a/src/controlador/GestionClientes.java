@@ -21,22 +21,16 @@ public class GestionClientes {
     public static ArrayList<Cliente> clientes= new ArrayList<Cliente>();
     
 
-    public void rellenarClientes(){
-        //TarjetaCredito t1= new TarjetaCredito("1234567891011126", "2");
-        //Cliente cliente1= new Cliente("0", "Paco", "aa@gmail.com", "1", t1);
-        //clientes.add(cliente1);
-    } 
-    
     public static void IntroducirCliente(Cliente cliente){
         clientes.add(cliente);
+        guardarClientes();
     }
+    
     
     public static  ArrayList<Cliente> getClientes() {
         return clientes;
     }
 
-    
-    
     public static void cargarClientes() {
         try {
             //Lectura de los clientes

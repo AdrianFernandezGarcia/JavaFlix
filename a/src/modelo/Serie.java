@@ -17,7 +17,7 @@ public class Serie extends Contenido {
     private ArrayList<Capitulo> capitulos;
 
     
-     public Serie(String titulo, String sinopsis, String genero, int anio, String actores,ImageIcon portada,int temporadas, ArrayList<Capitulo> capitulos) {
+     public Serie(String titulo, String sinopsis, String genero, int anio, ArrayList<String> actores,ImageIcon portada,int temporadas, ArrayList<Capitulo> capitulos) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.genero = genero;

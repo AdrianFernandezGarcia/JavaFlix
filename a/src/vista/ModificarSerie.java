@@ -18,6 +18,7 @@ import modelo.Serie;
 public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
 
     private final JFrame principal;
+    private final ArrayList<String> actores= new ArrayList();
     private final ArrayList<Capitulo> capitulos= new ArrayList();
     private File archivoPortada;
     private final int indice;
@@ -42,7 +43,6 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
         labelError = new javax.swing.JLabel();
         labelActores = new javax.swing.JLabel();
         labelCorreo1 = new javax.swing.JLabel();
-        tfGenero = new javax.swing.JTextField();
         labelCorreo = new javax.swing.JLabel();
         labelDNI = new javax.swing.JLabel();
         tfTitulo = new javax.swing.JTextField();
@@ -60,9 +60,10 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
         tfDuracionCap = new javax.swing.JFormattedTextField();
         labelDirector1 = new javax.swing.JLabel();
         botonAceptar = new javax.swing.JButton();
+        cbGenero = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Modificar Serie");
+        setTitle("Introducir");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -143,6 +144,8 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
             }
         });
 
+        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acción", "Aventuras", "Ciencia-FIcción", "Suspense" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -163,43 +166,42 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
                                         .addComponent(labelDNI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(tfGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(tfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(tfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cbGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(82, 82, 82))
+                        .addGap(63, 63, 63))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tfTituloCap, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelDirector1)
+                                .addGap(24, 24, 24)
+                                .addComponent(tfDuracionCap, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonCapitulos))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(labelDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(tfTituloCap, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(labelDirector1)
-                                        .addGap(24, 24, 24)
-                                        .addComponent(tfDuracionCap, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonCapitulos))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelDuracion)
-                                    .addComponent(labelPortada)
-                                    .addComponent(labelActores))
-                                .addGap(7, 7, 7)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tfActores, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                                    .addComponent(tfNumTem)
-                                    .addComponent(botonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(19, 19, 19))))
+                            .addComponent(labelDuracion)
+                            .addComponent(labelPortada)
+                            .addComponent(labelActores))
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfActores)
+                            .addComponent(tfNumTem)
+                            .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(94, 94, 94))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +243,7 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
                         .addGap(31, 31, 31)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelCorreo)
-                            .addComponent(tfGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,12 +321,16 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
 
         //Caso en el que alguno de los campos no ha sido rellenado.
-        if((comprobarNulo(tfTitulo.getText()))||(comprobarNulo(tfGenero.getText()))||(comprobarNulo(tfAnio.getText()))||(comprobarNulo(taSinopsis.getText()))||(comprobarNulo(labelActores.getText()))||(comprobarNulo(tfNumTem.getText()))||(comprobarNulo(tfNumTem.getText()))){
+        if((comprobarNulo(tfTitulo.getText()))||(comprobarNulo(tfAnio.getText()))||(comprobarNulo(taSinopsis.getText()))||(comprobarNulo(labelActores.getText()))||(comprobarNulo(tfNumTem.getText()))||(comprobarNulo(tfNumTem.getText()))){
             MostrarError(labelError, "Todos los campos deben ser rellenados");
         }
         
         else if(capitulos.isEmpty()){
             MostrarError(labelError, "Se debe añadir al menos un capítulo.");
+        }
+        
+        else if(actores.isEmpty()){
+            MostrarError(labelError, "Se debe añadir al menos un actor.");
         }
 
         //Si no hay nulos ni errores de formato: crear el contenidp e introducirlo en la lista.
@@ -332,7 +338,7 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
             Serie serieRegistrada;
             try {
                 
-                serieRegistrada = new Serie(tfTitulo.getText(), taSinopsis.getText(), tfGenero.getText(), Integer.parseInt(tfAnio.getText()), labelActores.getText(),new ImageIcon(ImageIO.read(archivoPortada)) ,Integer.parseInt(tfNumTem.getText()), capitulos);
+                serieRegistrada = new Serie(tfTitulo.getText(), taSinopsis.getText(), cbGenero.getSelectedItem().toString(), Integer.parseInt(tfAnio.getText()), actores,new ImageIcon(ImageIO.read(archivoPortada)) ,Integer.parseInt(tfNumTem.getText()), capitulos);
                 GestionContenido.modificarContenido(serieRegistrada, indice);
                 //Cerrar la ventana, pero no finalizar la app.
                 dispose();
@@ -358,6 +364,7 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JButton botonImagen;
     private javax.swing.JButton buttonCapitulos;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelActores;
@@ -374,7 +381,6 @@ public class ModificarSerie extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JTextField tfActores;
     private javax.swing.JFormattedTextField tfAnio;
     private javax.swing.JFormattedTextField tfDuracionCap;
-    private javax.swing.JTextField tfGenero;
     private javax.swing.JFormattedTextField tfNumTem;
     private javax.swing.JTextField tfTitulo;
     private javax.swing.JTextField tfTituloCap;

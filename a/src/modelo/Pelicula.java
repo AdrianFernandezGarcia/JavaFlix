@@ -5,11 +5,8 @@
  */
 package modelo;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -21,7 +18,7 @@ public class Pelicula extends Contenido {
     private String duracionMinutos;
     private String director;
     
-    public Pelicula(String titulo, String sinopsis, String genero, int anio, String actores,ImageIcon portada, String duracionMinutos, String director) throws IOException {
+    public Pelicula(String titulo, String sinopsis, String genero, int anio, ArrayList<String> actores,ImageIcon portada, String duracionMinutos, String director) throws IOException {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.genero = genero;

@@ -1,13 +1,7 @@
 package modelo;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -20,7 +14,7 @@ public abstract class Contenido implements Serializable{
     protected String sinopsis;
     protected String genero;
     protected int anio;
-    protected String actores;
+    protected ArrayList<String> actores;
     protected ImageIcon portada;
 
 
@@ -60,11 +54,11 @@ public abstract class Contenido implements Serializable{
         this.anio = anio;
     }
 
-    public String getActores() {
+    public ArrayList<String> getActores() {
         return actores;
     }
 
-    public void setActores(String actores) {
+    public void setActores(ArrayList<String> actores) {
         this.actores = actores;
     }
     

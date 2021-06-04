@@ -18,6 +18,7 @@ public class Cliente implements Serializable{
     private String correo;
     private String clave;
     private TarjetaCredito tarjeta;
+    private Suscripcion suscripcion;
 
     public Cliente(String dni, String nombre, String correo, String clave, TarjetaCredito tarjeta) {
         this.dni = dni;
@@ -68,6 +69,16 @@ public class Cliente implements Serializable{
     public void setTarjeta(TarjetaCredito tarjeta) {
         this.tarjeta = tarjeta;
     }
+
+    public Suscripcion getSuscripcion() {
+        return suscripcion;
+    }
+
+    public void setSuscripcion(Suscripcion suscripcion) {
+        this.suscripcion = suscripcion;
+    }
+    
+    
 
     @Override
     public String toString() {

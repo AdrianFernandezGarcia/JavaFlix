@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import modelo.Cliente;
 import modelo.ErrorUI;
 import modelo.TarjetaCredito;
+import vista.usuario.Usuario;
 
 public class Registro extends javax.swing.JFrame implements ErrorUI {
 
@@ -24,6 +25,7 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
+        
         
     }
     
@@ -243,8 +245,6 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
                 TarjetaCredito tarjetaRegistrada = new TarjetaCredito(tfTarjeta.getText(), fechaCad);
                 Cliente clienteRegistrado = new Cliente(tfDNI.getText(), tfNombre.getText(), tfCorreo.getText(), valorClave, tarjetaRegistrada);
                 GestionClientes.IntroducirCliente(clienteRegistrado);
-                GestionClientes.guardarClientes();
-                
             }
             catch (ParseException ex) {
                 MostrarError(labelError, "El formato de la fecha debe ser el siguiente : MM/AA");

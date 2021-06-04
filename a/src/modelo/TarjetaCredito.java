@@ -16,7 +16,7 @@ public class TarjetaCredito implements Serializable{
     
     private String numero;
     private Date fechaCaducidad;//mirar si hay que cambiarlo
-    private int saldo;//mirar si hay que cambiarlo por long
+    private double saldo;//mirar si hay que cambiarlo por long
     
     public TarjetaCredito(String numero, Date fechaCaducidad) {
         
@@ -39,13 +39,21 @@ public class TarjetaCredito implements Serializable{
         this.numero = numero;
     }
 
+    public Date getFechaCaducidad() {
+        return fechaCaducidad;
+    }
+
+    public void setFechaCaducidad(Date fechaCaducidad) {
+        this.fechaCaducidad = fechaCaducidad;
+    }
+
     
 
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(int saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
     

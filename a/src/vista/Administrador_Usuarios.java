@@ -3,7 +3,6 @@ package vista;
 import controlador.GestionClientes;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import modelo.Cliente;
 
 public class Administrador_Usuarios extends javax.swing.JFrame {
@@ -149,10 +148,15 @@ public class Administrador_Usuarios extends javax.swing.JFrame {
             GestionClientes.clientes.remove(jList1.getSelectedIndex());
         }
         
-        disposicionLista();
+        refrescar();
         
     }//GEN-LAST:event_botonBorrarActionPerformed
 
+    private void refrescar(){
+         //Refrescar la lista
+       GestionClientes.cargarClientes();
+       disposicionLista();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBorrar;
     private javax.swing.JLabel jLabel1;

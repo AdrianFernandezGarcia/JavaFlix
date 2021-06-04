@@ -3,6 +3,7 @@ package vista;
 import controlador.GestionContenido;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -19,6 +20,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
 
     private final JFrame principal;
     private File archivoPortada;
+    private final ArrayList<String> actores= new ArrayList();
     
     public AgregarPelicula(JFrame v) {
         initComponents();
@@ -46,7 +48,6 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         labelDuracion = new javax.swing.JLabel();
         tfActores = new javax.swing.JLabel();
         labelCorreo1 = new javax.swing.JLabel();
-        tfGenero = new javax.swing.JTextField();
         labelCorreo = new javax.swing.JLabel();
         labelDNI = new javax.swing.JLabel();
         botonAceptar = new javax.swing.JButton();
@@ -60,9 +61,11 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         tfDirector = new javax.swing.JTextField();
         botonImagen = new javax.swing.JButton();
         labelPortada = new javax.swing.JLabel();
+        cbGenero = new javax.swing.JComboBox<>();
+        botonActores = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Añadir Película");
+        setTitle("Introducir");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -117,7 +120,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         }
         tfDuracion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        labelDirector.setText("Actores");
+        labelDirector.setText("Director");
 
         botonImagen.setText("AÑADIR IMÁGEN");
         botonImagen.addActionListener(new java.awt.event.ActionListener() {
@@ -127,6 +130,16 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         });
 
         labelPortada.setText("Portada");
+
+        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acción", "Aventuras", "Ciencia-FIcción", "Suspense" }));
+
+        botonActores.setText("AÑADIR ACTOR");
+        botonActores.setPreferredSize(new java.awt.Dimension(6, 22));
+        botonActores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActoresActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -148,9 +161,9 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
                                         .addComponent(labelCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
                                         .addComponent(labelDNI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(tfGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(tfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(tfTitulo)
+                                        .addComponent(cbGenero, 0, 166, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -176,9 +189,11 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
                             .addComponent(labelPortada))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))))
-                .addGap(95, 95, 95))
+                            .addComponent(botonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                            .addComponent(jTextField2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,18 +215,17 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
                                 .addGap(30, 30, 30)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelCorreo)
-                                    .addComponent(tfGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(botonImagen)
-                                    .addComponent(labelPortada)))
+                                    .addComponent(labelPortada)
+                                    .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(tfActores)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(51, 51, 51)))
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(49, 49, 49)))
                         .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelAnio)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelDuracion)
@@ -222,7 +236,10 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
                                     .addComponent(tfDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                                 .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(labelAnio)))))
                 .addComponent(labelError)
                 .addContainerGap(22, Short.MAX_VALUE))
         );
@@ -233,14 +250,16 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(739, 425));
+        setSize(new java.awt.Dimension(757, 425));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -258,7 +277,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
 
         //Caso en el que alguno de los campos(o todos) no ha sido rellenado.
-        if((comprobarNulo(tfTitulo.getText()))||(comprobarNulo(tfGenero.getText()))||(comprobarNulo(tfAnio.getText()))||(comprobarNulo(taSinopsis.getText()))||(comprobarNulo(tfActores.getText()))||(comprobarNulo(tfDuracion.getText()))||(comprobarNulo(tfDirector.getText()))){
+        if((comprobarNulo(tfTitulo.getText()))||(comprobarNulo(tfAnio.getText()))||(comprobarNulo(taSinopsis.getText()))||(comprobarNulo(tfActores.getText()))||(comprobarNulo(tfDuracion.getText()))||(comprobarNulo(tfDirector.getText()))){
             MostrarError(labelError, "Todos los campos deben ser rellenados");
         }
        
@@ -268,11 +287,16 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
             MostrarError(labelError, "Se debe introducir una imágen de portada.");
         }
         
+        else if(actores.isEmpty()){
+            MostrarError(labelError, "Se debe añadir al menos un actor.");
+        }
+        
         //Si no hay nulos ni errores de formato: crear el contenidp e introducirlo en la lista.
         else{
             Pelicula peliculaRegistrada;
+            System.out.println(cbGenero.getSelectedItem().toString());
             try {
-                peliculaRegistrada = new Pelicula(tfTitulo.getText(), taSinopsis.getText(), tfGenero.getText(), Integer.parseInt(tfAnio.getText()), tfActores.getText(),new ImageIcon(ImageIO.read(archivoPortada)) ,tfDuracion.getText(), tfDirector.getText());
+                peliculaRegistrada = new Pelicula(tfTitulo.getText(), taSinopsis.getText(), cbGenero.getSelectedItem().toString(), Integer.parseInt(tfAnio.getText()), actores,new ImageIcon(ImageIO.read(archivoPortada)) ,tfDuracion.getText(), tfDirector.getText());
                 GestionContenido.crearContenido(peliculaRegistrada);
             } catch (IOException ex) {
                 Logger.getLogger(AgregarPelicula.class.getName()).log(Level.SEVERE, null, ex);
@@ -281,7 +305,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
             //resetear campos
             tfTitulo.setText("");
             taSinopsis.setText("");
-            tfGenero.setText("");
+            cbGenero.setSelectedIndex(0);
             tfAnio.setText("");
             tfActores.setText("");
             tfDuracion.setText("");
@@ -308,6 +332,15 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
       
     }//GEN-LAST:event_botonImagenActionPerformed
 
+    private void botonActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActoresActionPerformed
+        if(!(tfActores.getText().equals(""))){
+            actores.add(tfActores.getText());
+        }
+        else{
+            MostrarError(labelError, "El nombre del actor a añadir no puede estar vacío");
+        }
+    }//GEN-LAST:event_botonActoresActionPerformed
+
     @Override
     public void MostrarError(JLabel label, String textoError) {
         label.setText(textoError);
@@ -315,8 +348,10 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;
+    private javax.swing.JButton botonActores;
     private javax.swing.JButton botonImagen;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField2;
@@ -333,7 +368,6 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JFormattedTextField tfAnio;
     private javax.swing.JTextField tfDirector;
     private javax.swing.JFormattedTextField tfDuracion;
-    private javax.swing.JTextField tfGenero;
     private javax.swing.JTextField tfTitulo;
     // End of variables declaration//GEN-END:variables
 }

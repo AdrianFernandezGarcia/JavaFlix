@@ -1,22 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/*
- * VentanaPrincipal.java
- *
- * Created on 01-feb-2019, 12:58:33
- */
 package vista;
 
 import controlador.GestionClientes;
 import controlador.GestionContenido;
+import controlador.GestionSuscripciones;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JLabel;
 import modelo.Cliente;
 import modelo.ErrorUI;
+import vista.usuario.Usuario;
 
 
 
@@ -32,6 +25,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
         GestionContenido.cargarContenido();
         initComponents();
         labelError.setVisible(false);
+        GestionSuscripciones.comprobarSuscripciones();
               
     }
 
@@ -157,9 +151,7 @@ public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
-        //GestionClientes.guardarClientes();
-        
+      
     }//GEN-LAST:event_formWindowClosing
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
@@ -184,24 +176,25 @@ public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
            }
            
            else{
-               
-               GestionClientes.getClientes().forEach((Cliente c) -> {
+               try{
+                   GestionClientes.getClientes().forEach((Cliente c) -> {
                    if((c.getCorreo().equals(tfCorreo.getText())) && (c.getClave().equals(valorClave))){
                        //loguear como cliente
-                       System.out.println("Logueando como cliente...");
+                       Usuario u= new Usuario(this, c);
                    }
                    
                    else{
                        MostrarError(labelError, "El correo y contraseña introducidos no coinciden. Vuelva a inentarlo.");
                    }
                });
+               }catch(NullPointerException ex){
+                   MostrarError(labelError, "Correo o contraseña no válidos");
+               }
+               
            }
            
        }
-       
-       else{
-           MostrarError(labelError, "Correo o contraseña no válidos");
-       }
+      
     }
     @Override
     public void MostrarError(JLabel label, String textoError) {

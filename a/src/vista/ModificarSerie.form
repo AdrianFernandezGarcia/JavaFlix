@@ -67,8 +67,8 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="tfGenero" min="-2" pref="166" max="-2" attributes="0"/>
                                           <Component id="tfTitulo" min="-2" pref="166" max="-2" attributes="0"/>
+                                          <Component id="cbGenero" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -79,49 +79,46 @@
                               </Group>
                           </Group>
                       </Group>
-                      <Component id="labelError" alignment="0" min="-2" pref="468" max="-2" attributes="0"/>
+                      <Component id="labelError" alignment="0" min="-2" pref="391" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
                           <Component id="botonAceptar" min="-2" pref="154" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="labelDirector" min="-2" pref="56" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="tfTituloCap" min="-2" pref="129" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="labelDirector1" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                          <Component id="tfDuracionCap" min="-2" pref="129" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="buttonCapitulos" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelDirector" min="-2" pref="56" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="tfTituloCap" min="-2" pref="129" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="labelDuracion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labelPortada" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labelActores" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="tfActores" pref="129" max="32767" attributes="0"/>
-                                      <Component id="tfNumTem" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="botonImagen" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="labelDirector1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="tfDuracionCap" min="-2" pref="129" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="buttonCapitulos" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="labelDuracion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelPortada" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelActores" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="tfActores" max="32767" attributes="0"/>
+                              <Component id="tfNumTem" alignment="0" max="32767" attributes="0"/>
+                              <Component id="botonImagen" alignment="0" min="-2" pref="129" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
+                  <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -175,7 +172,7 @@
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="labelCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tfGenero" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cbGenero" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -221,8 +218,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Sinopsis"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tfGenero">
         </Component>
         <Component class="javax.swing.JLabel" name="labelCorreo">
           <Properties>
@@ -333,6 +328,21 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonAceptarActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbGenero">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Acci&#xf3;n"/>
+                <StringItem index="1" value="Aventuras"/>
+                <StringItem index="2" value="Ciencia-FIcci&#xf3;n"/>
+                <StringItem index="3" value="Suspense"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

@@ -31,12 +31,6 @@ public class GestionContenido {
                 
     }
     
-    public static void borrarContenido(Contenido contenido){
-        
-        contenidos.remove(contenido);
-        guardarContenido();
-        
-    }
     
     public static void modificarContenido(Contenido contenido, int index){
         
