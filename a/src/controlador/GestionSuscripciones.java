@@ -5,13 +5,9 @@
  */
 package controlador;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import modelo.Cliente;
 import modelo.Suscripcion;
 
@@ -24,19 +20,32 @@ public class GestionSuscripciones {
     public static ArrayList<Suscripcion> suscripciones = new ArrayList();
 
     public static void comprobarSuscripciones() {
+        
 
         for (Cliente c : GestionClientes.getClientes()) {
             if (c.getSuscripcion() != null) {
-                if (LocalDate.now().equals(c.getSuscripcion().getFechaInicio().plusMonths(1))) {
+                if (comprobarFecha(c.getSuscripcion().getFechaFin())) {
+                    System.out.println("Renovando suscripción...");
+                    System.out.println("Saldo inicial: "+c.getTarjeta().getSaldo());
                     //Cobrar la suscripcion  
                     c.getTarjeta().setSaldo((c.getTarjeta().getSaldo() - c.getSuscripcion().getPrecio()));
                     //establecer la fecha del final de la suscripcion como fecha de inicio
                     c.getSuscripcion().setFechaInicio(c.getSuscripcion().getFechaInicio().plusMonths(1));
                     GestionClientes.guardarClientes();
+                    System.out.println("Saldo final: "+c.getTarjeta().getSaldo());
                 }
             }
 
         }
+    }
+    
+    private static boolean comprobarFecha(LocalDate fecha){
+        Calendar fechaActual = Calendar.getInstance();
+        fechaActual.set(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
+        Calendar limite = Calendar.getInstance();
+        limite.set(fecha.getYear(),fecha.getMonthValue(), fecha.getDayOfMonth());
+        
+        return fechaActual.after(limite);
     }
 
 }

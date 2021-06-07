@@ -47,10 +47,6 @@ public class Serie extends Contenido {
         this.capitulos = capitulos;
     }
 
-    @Override
-    public String toString() {
-        return this.titulo;
-    }
     
     
 }

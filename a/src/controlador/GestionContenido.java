@@ -5,7 +5,6 @@
  */
 package controlador;
 
-import static controlador.GestionClientes.clientes;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import modelo.Contenido;
 import java.util.ArrayList;
-import modelo.Cliente;
+import java.util.Comparator;
 
 /**
  *
@@ -46,6 +45,7 @@ public class GestionContenido {
             FileInputStream istreamPer = new FileInputStream("contenido.dat");
             ObjectInputStream oisPer = new ObjectInputStream(istreamPer);
             contenidos = (ArrayList<Contenido>) oisPer.readObject();
+            contenidos.sort(Comparator.naturalOrder());
             istreamPer.close();
             
         } catch (IOException ioe) {
@@ -60,9 +60,8 @@ public class GestionContenido {
     public static void guardarContenido() {
         try {
             //Si hay datos los guardamos...
-            if (!clientes.isEmpty()) {
+            if (!contenidos.isEmpty()) {
                 try ( 
-                 
                     //Serialización
                     FileOutputStream ostreamPer = new FileOutputStream("contenido.dat")) {
                     ObjectOutputStream oosPer = new ObjectOutputStream(ostreamPer);

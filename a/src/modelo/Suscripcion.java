@@ -7,7 +7,6 @@ package modelo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  *
@@ -15,11 +14,13 @@ import java.util.Date;
  */
 public class Suscripcion implements Serializable {
     private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private int tipoSuscripcion;
-    private double precio;
+    private final double precio;
 
-    public Suscripcion(LocalDate fechaInicio, int tipoSuscripcion, double precio) {
+    public Suscripcion(LocalDate fechaInicio,LocalDate fechaFin, int tipoSuscripcion, double precio) {
         this.fechaInicio = fechaInicio;
+        this.fechaFin=fechaFin;
         this.tipoSuscripcion = tipoSuscripcion;
         this.precio=precio;
     }
@@ -31,6 +32,15 @@ public class Suscripcion implements Serializable {
     public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+    
 
     public int getTipoSuscripcion() {
         return tipoSuscripcion;
@@ -44,9 +54,6 @@ public class Suscripcion implements Serializable {
         return precio;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-    
+   
     
 }

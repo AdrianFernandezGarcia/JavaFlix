@@ -46,7 +46,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         labelAnio = new javax.swing.JLabel();
         labelError = new javax.swing.JLabel();
         labelDuracion = new javax.swing.JLabel();
-        tfActores = new javax.swing.JLabel();
+        labelActores = new javax.swing.JLabel();
         labelCorreo1 = new javax.swing.JLabel();
         labelCorreo = new javax.swing.JLabel();
         labelDNI = new javax.swing.JLabel();
@@ -55,7 +55,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         jScrollPane1 = new javax.swing.JScrollPane();
         taSinopsis = new javax.swing.JTextArea();
         tfAnio = new javax.swing.JFormattedTextField();
-        jTextField2 = new javax.swing.JTextField();
+        tfActores = new javax.swing.JTextField();
         tfDuracion = new javax.swing.JFormattedTextField();
         labelDirector = new javax.swing.JLabel();
         tfDirector = new javax.swing.JTextField();
@@ -81,7 +81,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
 
         labelDuracion.setText("Duración");
 
-        tfActores.setText("Actores");
+        labelActores.setText("Actores");
 
         labelCorreo1.setText("Sinopsis");
 
@@ -185,12 +185,12 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
                         .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(tfActores)
+                            .addComponent(labelActores)
                             .addComponent(labelPortada))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(botonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                            .addComponent(jTextField2))
+                            .addComponent(tfActores))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -220,8 +220,8 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
                                     .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(tfActores)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelActores)
+                                    .addComponent(tfActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(49, 49, 49)))
                         .addGap(39, 39, 39)
@@ -277,7 +277,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
 
         //Caso en el que alguno de los campos(o todos) no ha sido rellenado.
-        if((comprobarNulo(tfTitulo.getText()))||(comprobarNulo(tfAnio.getText()))||(comprobarNulo(taSinopsis.getText()))||(comprobarNulo(tfActores.getText()))||(comprobarNulo(tfDuracion.getText()))||(comprobarNulo(tfDirector.getText()))){
+        if((comprobarNulo(tfTitulo.getText()))||(comprobarNulo(tfAnio.getText()))||(comprobarNulo(taSinopsis.getText()))||(comprobarNulo(labelActores.getText()))||(comprobarNulo(tfDuracion.getText()))||(comprobarNulo(tfDirector.getText()))){
             MostrarError(labelError, "Todos los campos deben ser rellenados");
         }
        
@@ -354,7 +354,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel labelActores;
     private javax.swing.JLabel labelAnio;
     private javax.swing.JLabel labelCorreo;
     private javax.swing.JLabel labelCorreo1;
@@ -364,7 +364,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JLabel labelError;
     private javax.swing.JLabel labelPortada;
     private javax.swing.JTextArea taSinopsis;
-    private javax.swing.JLabel tfActores;
+    private javax.swing.JTextField tfActores;
     private javax.swing.JFormattedTextField tfAnio;
     private javax.swing.JTextField tfDirector;
     private javax.swing.JFormattedTextField tfDuracion;

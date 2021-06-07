@@ -406,6 +406,8 @@ public class AgregarSerie extends javax.swing.JFrame implements ErrorUI {
         else{
             MostrarError(labelError, "El nombre del actor a añadir no puede estar vacío");
         }
+        
+        tfActores.setText("");
     }//GEN-LAST:event_botonActoresActionPerformed
 
     @Override

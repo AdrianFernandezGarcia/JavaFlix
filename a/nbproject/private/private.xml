@@ -6,6 +6,7 @@
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/AgregarPelicula.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/Administrador_Contenido.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/usuario/Usuario.java</file>
+            <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/modelo/TarjetaCredito.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/usuario/Usuario_Busqueda.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/modelo/Serie.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/Administrador_Usuarios.java</file>
@@ -13,6 +14,7 @@
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/ModificarPelicula.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/AgregarSerie.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/ModificarSerie.java</file>
+            <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/modelo/Calificacion.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/VentanaPrincipal.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/controlador/GestionClientes.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/usuario/Usuario_Suscripcion.java</file>
@@ -21,6 +23,7 @@
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/modelo/Cliente.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/vista/Registro.java</file>
             <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/modelo/Suscripcion.java</file>
+            <file>file:/C:/Users/adria/Documents/NetBeansProjects/JavaFlix/a/src/controlador/GestionSuscripciones.java</file>
         </group>
     </open-files>
 </project-private>

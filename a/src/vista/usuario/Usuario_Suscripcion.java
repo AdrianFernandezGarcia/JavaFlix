@@ -2,7 +2,8 @@ package vista.usuario;
 
 import controlador.GestionClientes;
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -27,11 +28,15 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
-        
-        if (!(cooldownCambiarSuscripcion())&&!(Usuario.usuarioLogueado.getSuscripcion()==null)) 
-            cbSuscripcion.setEnabled(false);
+        Suscripcion s = Usuario.usuarioLogueado.getSuscripcion();
 
-        
+        if ((cooldownCambiarSuscripcion())) {
+            cbSuscripcion.setEnabled(false);
+            cbSuscripcion.setSelectedIndex(Usuario.usuarioLogueado.getSuscripcion().getTipoSuscripcion());
+
+        } else {
+            cbSuscripcion.setEnabled(true);
+        }
 
     }
 
@@ -169,7 +174,7 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
         }
     }//GEN-LAST:event_botonSaldoActionPerformed
 
-    private boolean comprobarCaducidad(Date fecha) {
+    private boolean comprobarLimiteFecha(Date fecha) {
 
         Calendar fechaActual = Calendar.getInstance();
         fechaActual.set(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
@@ -180,11 +185,11 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
     }
 
     private void botonSuscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSuscripcionActionPerformed
-        LocalDate date = LocalDate.now();
         int opcionSeleccionada = 0;
         double precioSuscripcion = 0;
 
-        if (Usuario.usuarioLogueado.getSuscripcion() == null) {
+        //Si el usuario todavía no se ha suscrito o ya puede cambiar su suscripcion, entonces seleccionar suscripcion.
+        if ((Usuario.usuarioLogueado.getSuscripcion() == null) || (!cooldownCambiarSuscripcion())) {
             switch (cbSuscripcion.getSelectedIndex()) {
                 case 0:
                     precioSuscripcion = precioBasica;
@@ -205,32 +210,37 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
             //Comprobar que tenga suficiente saldo y que la tarjeta no esté caducada.
             if ((Usuario.usuarioLogueado.getTarjeta().getSaldo() - precioSuscripcion < 0)) {
                 MostrarError(labelError, "Lo sentimos, su saldo es insuficiente para completar la transacción.");
-            } else if ((comprobarCaducidad(Usuario.usuarioLogueado.getTarjeta().getFechaCaducidad()))) {
+            } else if ((comprobarLimiteFecha(Usuario.usuarioLogueado.getTarjeta().getFechaCaducidad()))) {
                 MostrarError(labelError, "Lo sentimos, su tarjeta de crédito se encuentra caducada.");
             } else {
                 MostrarError(labelError, "Se ha seleccionado el plan " + cbSuscripcion.getSelectedItem().toString() + ".");
-                Usuario.usuarioLogueado.setSuscripcion(new Suscripcion(date, opcionSeleccionada, precioSuscripcion));
+                Usuario.usuarioLogueado.setSuscripcion(new Suscripcion(LocalDate.now(), LocalDate.now().plusDays(1), opcionSeleccionada, precioSuscripcion));
+                Usuario.usuarioLogueado.getTarjeta().setSaldo(Usuario.usuarioLogueado.getTarjeta().getSaldo() - precioSuscripcion);
                 GestionClientes.guardarClientes();
 
-                cbSuscripcion.setSelectedIndex(Usuario.usuarioLogueado.getSuscripcion().getTipoSuscripcion());
-                cbSuscripcion.setEnabled(false);
             }
         } else {
-
-            if (cooldownCambiarSuscripcion()) {
-                cbSuscripcion.setEnabled(true);
-
-            } else {
-                MostrarError(labelError, "Podrá modificar su suscripción en " + date.plusMonths(1).minusDays(date.getDayOfMonth()).getDayOfMonth() + " días");
-            }
-        }
-
+            MostrarError(labelError, "Podrá modificar su suscripción en " + ChronoUnit.DAYS.between(LocalDate.now(), Usuario.usuarioLogueado.getSuscripcion().getFechaFin()) + " días.");
     }//GEN-LAST:event_botonSuscripcionActionPerformed
+    }
 
     private boolean cooldownCambiarSuscripcion() {
+        Date fechaLimite;
+        if (Usuario.usuarioLogueado.getSuscripcion() != null) {
 
-        return (Usuario.usuarioLogueado.getSuscripcion().getFechaInicio().equals(Usuario.usuarioLogueado.getSuscripcion().getFechaInicio().plusMonths(1)));
+            fechaLimite = Date.from(Usuario.usuarioLogueado.getSuscripcion().getFechaFin().atStartOfDay().toInstant(ZoneOffset.UTC));
+        } else {
+            return false;
+        }
 
+        return comprobarLimiteFecha(fechaLimite);
+
+    }
+
+    @Override
+    public void MostrarError(JLabel label, String textoError) {
+        label.setText(textoError);
+        label.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -243,9 +253,4 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JTextField tfSaldo;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void MostrarError(JLabel label, String textoError) {
-        label.setText(textoError);
-        label.setVisible(true);
-    }
 }

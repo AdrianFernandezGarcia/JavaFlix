@@ -47,10 +47,6 @@ public class Pelicula extends Contenido {
         this.director = director;
     }
 
-    @Override
-    public String toString() {
-        return this.titulo;
-    }
     
     
     

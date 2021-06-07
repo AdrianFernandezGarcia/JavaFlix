@@ -6,6 +6,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,6 +20,7 @@ public class Cliente implements Serializable{
     private String clave;
     private TarjetaCredito tarjeta;
     private Suscripcion suscripcion;
+    private ArrayList<Calificacion> calificaciones;
 
     public Cliente(String dni, String nombre, String correo, String clave, TarjetaCredito tarjeta) {
         this.dni = dni;
@@ -26,6 +28,8 @@ public class Cliente implements Serializable{
         this.correo = correo;
         this.clave = clave;
         this.tarjeta = tarjeta;
+        this.suscripcion=null;
+        this.calificaciones= new ArrayList();
     }
     
     //GETTERS & SETTERS
@@ -77,8 +81,27 @@ public class Cliente implements Serializable{
     public void setSuscripcion(Suscripcion suscripcion) {
         this.suscripcion = suscripcion;
     }
+
+    public ArrayList<Calificacion> getCalificaciones() {
+        return calificaciones;
+    }
+
+    public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
+        this.calificaciones = calificaciones;
+    }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        
+        if ((obj == null) || (obj.getClass() != this.getClass())) {
+            return false;
+        }
+        
+        Cliente c= (Cliente)obj;
+        
+        return (this.dni.equals(c.dni));
+
+    }
 
     @Override
     public String toString() {
