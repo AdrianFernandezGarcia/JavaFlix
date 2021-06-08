@@ -1,7 +1,6 @@
 package vista;
 
 import controlador.GestionContenido;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +29,16 @@ public class ModificarPelicula extends javax.swing.JFrame implements ErrorUI {
         this.setVisible(true);
         labelError.setVisible(false);
         this.indice=indice;
+        
+        //cargar los datos de la película a modificar
+        Pelicula pelicula= (Pelicula) GestionContenido.contenidos.get(indice);
+        tfTitulo.setText(pelicula.getTitulo());
+        cbGenero.setSelectedItem(pelicula.getGenero());
+        tfAnio.setText(String.valueOf(pelicula.getAnio()));
+        taSinopsis.setText(pelicula.getSinopsis());
+        tfDuracion.setText(pelicula.getDuracionMinutos());
+        tfDirector.setText(pelicula.getDirector());
+        
         
     }
     
@@ -67,7 +76,7 @@ public class ModificarPelicula extends javax.swing.JFrame implements ErrorUI {
         botonActores = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Introducir");
+        setTitle("Modificación de Película");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {

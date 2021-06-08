@@ -8,20 +8,18 @@ import javax.swing.ImageIcon;
  *
  * @author Adrián
  */
-public abstract class Contenido implements Serializable, Comparable<Contenido>{
-    
+public abstract class Contenido implements Serializable, Comparable<Contenido> {
+
     protected String titulo;
     protected String sinopsis;
     protected String genero;
     protected int anio;
     protected ArrayList<String> actores;
     protected ImageIcon portada;
-    protected ArrayList<Calificacion> calificaciones=new ArrayList();
-    protected double mediaPuntuaciones=0;
-    
-    
-    //GETTERS & SETTERS
+    protected ArrayList<Calificacion> calificaciones = new ArrayList();
+    protected double mediaPuntuaciones = 0;
 
+    //GETTERS & SETTERS
     public String getTitulo() {
         return titulo;
     }
@@ -89,55 +87,46 @@ public abstract class Contenido implements Serializable, Comparable<Contenido>{
     public void setMediaPuntuaciones(double mediaPuntuaciones) {
         this.mediaPuntuaciones = mediaPuntuaciones;
     }
-    
-    
 
     @Override
     public int compareTo(Contenido t) {
-        if ((this.anio> t.anio)) {
- 
+        if ((this.anio > t.anio) && (this.mediaPuntuaciones > t.mediaPuntuaciones)) {
+
             return 1;
-        }
-        else if ((this.anio < t.anio)) {
- 
+        } else if ((this.anio < t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)) {
+
             return -1;
-        }
+        } else if ((this.anio == t.anio) && (this.mediaPuntuaciones > t.mediaPuntuaciones)) {
+            return 1;
+        } else if ((this.anio == t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)) {
+            return -1;
+        } 
+        
+        
         else {
- 
+
             return 0;
         }
     }
 
-     @Override
+    @Override
     public boolean equals(Object obj) {
-        
+
         if ((obj == null) || (obj.getClass() != this.getClass())) {
             return false;
         }
-        
-        Contenido c= (Contenido)obj;
-        
+
+        Contenido c = (Contenido) obj;
+
         return (this.titulo.equals(c.titulo));
 
     }
-    
-    
 
     @Override
     public String toString() {
-        
-        if(!(this.calificaciones.isEmpty())){
-            return this.titulo+"      "+this.anio+"      "+this.mediaPuntuaciones;
-        }
-        
-        else{
-            return this.titulo+"      "+this.anio;
-        }
-        
+
+        return this.titulo + "      " + this.anio + "      " + this.mediaPuntuaciones;
+
     }
-    
-    
-    
-   
-    
+
 }

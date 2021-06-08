@@ -14,6 +14,9 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
     private final Cliente clienteIniciado = Usuario.usuarioLogueado;
     private final ArrayList<Contenido> contenidos = GestionContenido.contenidos;
     private final JFrame principal;
+    private final DefaultListModel modeloLista = new DefaultListModel();
+    //Flag booleano que determina si el usuario ha realizado una búsqueda o no.
+    private boolean buscado = false;
 
     /**
      * Constructor
@@ -38,7 +41,7 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
     private void disposicionLista(ArrayList<Contenido> contenidos) {
 
         //Crear un modelo de lista, rellenarlo y añadirlo al JList
-        DefaultListModel modeloLista = new DefaultListModel();
+        modeloLista.clear();
 
         contenidos.forEach(c -> {
             modeloLista.addElement(c);
@@ -73,11 +76,12 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         jSpinner1 = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
         botonCalificar = new javax.swing.JButton();
+        botonFavoritos = new javax.swing.JButton();
 
         jLabel2.setText("Filtros");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Introducir");
+        setTitle("Listado de Contenidos");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -134,6 +138,13 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
             }
         });
 
+        botonFavoritos.setText("AÑADIR A FAVORITOS");
+        botonFavoritos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonFavoritosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -184,7 +195,10 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
                                             .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(100, 100, 100)
-                                .addComponent(botonCalificar)))))
+                                .addComponent(botonCalificar))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(botonFavoritos)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -196,7 +210,9 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 70, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(botonFavoritos)
+                        .addGap(0, 29, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelBusqueda)
@@ -247,104 +263,6 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-        principal.setVisible(true);
-    }//GEN-LAST:event_formWindowClosed
-
-    private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
-
-        realizarBusqueda();
-
-    }//GEN-LAST:event_botonBuscarActionPerformed
-    /**
-     * Método para la calificación de contenidos.
-     *
-     * @param evt evento del botón de calificar.
-     */
-    private void botonCalificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalificarActionPerformed
-        boolean calificado = false;
-        if (jList1.isSelectionEmpty()) {
-            //error
-        } else {
-            //Comprobar que el cliente no haya calificado antes el mismo contenido.
-            //Si esto ocurre, se modificará la calificación en vez de añadirla de nuevo a a la lista.
-            Calificacion calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, contenidos.get(jList1.getSelectedIndex()));
-
-            //Recorrer y comprobar ambas listas y sobreescribir puntuaciones.
-            for (Calificacion c : clienteIniciado.getCalificaciones()) {
-
-                if (c.equals(calificacion)) {
-
-                    calificado = true;
-                    //modificar la calificación de las listas de clientes.
-                    c.setPuntuacion((Integer) jSpinner1.getValue());
-
-                }
-            }
-            
-            //modificar la calificación de las listas de contenidos.
-            contenidos.forEach((contenido) -> {
-                contenido.getCalificaciones().stream().filter((cal) -> (cal.equals(calificacion))).forEachOrdered((cal) -> {
-                    cal.setPuntuacion((Integer) jSpinner1.getValue());
-                });
-            });
-
-            //Si el cliente no había calificado nada antes o no ha calificado el contenido seleccionado.
-            if ((clienteIniciado.getCalificaciones().isEmpty()) || (!calificado)) {
-                //añadir la calificación de las listas de clientes y de contenidos;
-                agregarCalificacion(calificacion);
-            }
-            //modificar la nota media del contenido calificado
-            calcularMediaCalificacion(calificacion.getContenidoCalificado());
-            //guardar cambios en los ficheros correspondientes
-            guardarCambiosCalificacion();
-            disposicionLista(contenidos);
-
-        }
-
-    }//GEN-LAST:event_botonCalificarActionPerformed
-
-    /**
-     * Calcula la nota media del contenido seleccionado
-     *
-     * @param contenido contenido del que se quiere calcular su puntuación
-     * media.
-     */
-    private void calcularMediaCalificacion(Contenido contenido) {
-
-        double calificacionTotal = 0;
-        int numResultados = 0;
-        //recorrer la lista de calificaciones del contenido calificado
-        for (Calificacion cl : contenido.getCalificaciones()) {
-            //sumar todas las puntuaciones
-            calificacionTotal += cl.getPuntuacion();
-            //incrementar por cada calificacion de usuarios distintos
-            numResultados++;
-
-        }
-        //cambiar la nota media del contenido dividiendo la puntuación total entre el número de clientes que lo han calificado.
-        contenido.setMediaPuntuaciones(calificacionTotal / numResultados);
-        contenidos.set(jList1.getSelectedIndex(), contenido);
-    }
-
-    private void agregarCalificacion(Calificacion calificacionAgregar) {
-        clienteIniciado.getCalificaciones().add(calificacionAgregar);
-        contenidos.get(jList1.getSelectedIndex()).getCalificaciones().add(calificacionAgregar);
-
-    }
-
-    private void guardarCambiosCalificacion() {
-        jSpinner1.setValue(0);
-        GestionContenido.guardarContenido();
-        GestionClientes.guardarClientes();
-    }
-
-    /**
-     * Permite al usuario buscar escribiendo palabras y/o aplicando filtros de
-     * búsqueda.
-     */
     private void realizarBusqueda() {
 
         ArrayList<Contenido> busquedaPalabraClave = new ArrayList();
@@ -427,13 +345,176 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         } else {
             disposicionLista(busquedaFiltro);
         }
+        buscado = true;
 
     }
+
+    private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
+
+        realizarBusqueda();
+
+    }//GEN-LAST:event_botonBuscarActionPerformed
+
+
+    private void botonFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFavoritosActionPerformed
+
+        if (!(jList1.isSelectionEmpty())) {
+            if (!buscado) {
+
+                if (!(clienteIniciado.getListaSeguimiento().contains(GestionContenido.contenidos.get(jList1.getSelectedIndex())))) {
+                    Usuario.usuarioLogueado.getListaSeguimiento().add(GestionContenido.contenidos.get(jList1.getSelectedIndex()));
+                    GestionClientes.guardarClientes();
+                }
+
+            } else {
+                GestionContenido.contenidos.forEach((c) -> {
+                    for (Object co : modeloLista.toArray()) {
+                        if (c.equals((Contenido) co)) {
+                            if (!(clienteIniciado.getListaSeguimiento().contains((Contenido) co))) {
+                                Usuario.usuarioLogueado.getListaSeguimiento().add((Contenido) co);
+                                GestionClientes.guardarClientes();
+
+                            }
+
+                        }
+
+                    }
+                });
+            }
+
+        } else {
+            //error
+
+        }
+
+
+    }//GEN-LAST:event_botonFavoritosActionPerformed
+
+    /**
+     * Método para la calificación de contenidos.
+     *
+     * @param evt evento del botón de calificar.
+     */
+    private void botonCalificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalificarActionPerformed
+        boolean calificado = false;
+        Calificacion calificacion = null;
+
+        //Primero comprobar que no se haya buscado
+        //Esto es necesario porque al buscar los índices se desincronizan con la lista y se referenciarían objetos erróneos.
+        if (buscado) {
+            for (Contenido c : GestionContenido.contenidos) {
+
+                for (Object co : modeloLista.toArray()) {
+                    if (c.equals((Contenido) co)) {
+                        calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, (Contenido) co);
+                    }
+
+                }
+            }
+        } //Si no se ha buscado, referenciar el indice de la JList para crear el objeto
+        else {
+            calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, contenidos.get(jList1.getSelectedIndex()));
+        }
+
+        if (jList1.isSelectionEmpty() || calificacion == null) {
+            //error
+        } //Si el cliente no había calificado nada antes 
+        else if (clienteIniciado.getCalificaciones().isEmpty()) {
+            agregarCalificacion(calificacion);
+        } else {
+
+            for (Calificacion contenido : clienteIniciado.getCalificaciones()) {
+                //Comprobar que el cliente no haya calificado antes el mismo contenido.
+                //Si esto ocurre, se modificará la calificación en vez de añadirla de nuevo a a la lista.
+                if (contenido.equals(calificacion)) {
+                    calificado = true;
+                }
+                //Si el cliente no ha calificado el contenido seleccionado.
+
+            }
+
+            if (!calificado) {
+                agregarCalificacion(calificacion);
+
+            }
+
+            //Recorrer y comprobar ambas listas y sobreescribir puntuaciones.
+            if (calificado) {
+
+                //modificar la calificación de las listas de clientes.
+                clienteIniciado.getCalificaciones().forEach((cal) -> {
+                    cal.setPuntuacion((Integer) jSpinner1.getValue());
+                });
+
+                //modificar la calificación de las listas de contenidos.
+                contenidos.forEach((contenido) -> {
+                    contenido.getCalificaciones().stream().filter((calificacionContenido) -> (calificacionContenido.equals(calificacionContenido))).forEachOrdered((cal) -> {
+                        cal.setPuntuacion((Integer) jSpinner1.getValue());
+                    });
+                });
+
+            }
+
+            //modificar la nota media del contenido calificado
+            calcularMediaCalificacion(calificacion.getContenidoCalificado());
+            //guardar cambios en los ficheros correspondientes
+            guardarCambiosCalificacion();
+            disposicionLista(contenidos);
+
+        }
+
+
+    }//GEN-LAST:event_botonCalificarActionPerformed
+
+    /**
+     * Calcula la nota media del contenido seleccionado
+     *
+     * @param contenido contenido del que se quiere calcular su puntuación
+     * media.
+     */
+    private void calcularMediaCalificacion(Contenido contenido) {
+
+        double calificacionTotal = 0;
+        int numResultados = 0;
+        //recorrer la lista de calificaciones del contenido calificado
+        for (Calificacion cl : contenido.getCalificaciones()) {
+            //sumar todas las puntuaciones
+            calificacionTotal += cl.getPuntuacion();
+            //incrementar por cada calificacion de usuarios distintos
+            numResultados++;
+
+        }
+        //cambiar la nota media del contenido dividiendo la puntuación total entre el número de clientes que lo han calificado.
+        contenido.setMediaPuntuaciones(calificacionTotal / numResultados);
+        contenidos.set(jList1.getSelectedIndex(), contenido);
+    }
+
+    private void agregarCalificacion(Calificacion calificacionAgregar) {
+        clienteIniciado.getCalificaciones().add(calificacionAgregar);
+        contenidos.get(jList1.getSelectedIndex()).getCalificaciones().add(calificacionAgregar);
+
+    }
+
+    private void guardarCambiosCalificacion() {
+        jSpinner1.setValue(0);
+        GestionContenido.guardarContenido();
+        GestionClientes.guardarClientes();
+    }
+
+    /**
+     * Permite al usuario buscar escribiendo palabras y/o aplicando filtros de
+     * búsqueda.
+     */
+
+     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+         principal.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonCalificar;
+    private javax.swing.JButton botonFavoritos;
     private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

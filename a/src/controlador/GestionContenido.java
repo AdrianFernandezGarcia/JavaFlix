@@ -45,7 +45,7 @@ public class GestionContenido {
             FileInputStream istreamPer = new FileInputStream("contenido.dat");
             ObjectInputStream oisPer = new ObjectInputStream(istreamPer);
             contenidos = (ArrayList<Contenido>) oisPer.readObject();
-            contenidos.sort(Comparator.naturalOrder());
+            contenidos.sort(Comparator.reverseOrder());
             istreamPer.close();
             
         } catch (IOException ioe) {

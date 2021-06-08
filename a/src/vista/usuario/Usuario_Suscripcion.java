@@ -1,6 +1,9 @@
 package vista.usuario;
 
 import controlador.GestionClientes;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -28,7 +31,7 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
-        Suscripcion s = Usuario.usuarioLogueado.getSuscripcion();
+        this.labelError.setVisible(false);
 
         if ((cooldownCambiarSuscripcion())) {
             cbSuscripcion.setEnabled(false);
@@ -58,7 +61,7 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
         cbSuscripcion = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Sacar");
+        setTitle("Menú de suscripcion");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -96,10 +99,6 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cbSuscripcion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -112,13 +111,17 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
                         .addComponent(botonSaldo))
                     .addComponent(labelError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(105, 105, 105))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(195, 195, 195)
+                .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(32, 32, 32)
                 .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonSaldo)
                     .addComponent(tfSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,12 +158,6 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-        principal.setVisible(true);
-    }//GEN-LAST:event_formWindowClosed
-
-
     private void botonSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSaldoActionPerformed
 
         if (!(tfSaldo.getText().isEmpty())) {
@@ -174,15 +171,6 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
         }
     }//GEN-LAST:event_botonSaldoActionPerformed
 
-    private boolean comprobarLimiteFecha(Date fecha) {
-
-        Calendar fechaActual = Calendar.getInstance();
-        fechaActual.set(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
-        Calendar limite = Calendar.getInstance();
-        limite.setTime(fecha);
-
-        return fechaActual.after(limite);
-    }
 
     private void botonSuscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSuscripcionActionPerformed
         int opcionSeleccionada = 0;
@@ -214,28 +202,66 @@ public class Usuario_Suscripcion extends javax.swing.JFrame implements ErrorUI {
                 MostrarError(labelError, "Lo sentimos, su tarjeta de crédito se encuentra caducada.");
             } else {
                 MostrarError(labelError, "Se ha seleccionado el plan " + cbSuscripcion.getSelectedItem().toString() + ".");
-                Usuario.usuarioLogueado.setSuscripcion(new Suscripcion(LocalDate.now(), LocalDate.now().plusDays(1), opcionSeleccionada, precioSuscripcion));
+                Usuario.usuarioLogueado.setSuscripcion(new Suscripcion(LocalDate.now(), LocalDate.now().plusMonths(1), opcionSeleccionada, precioSuscripcion));
                 Usuario.usuarioLogueado.getTarjeta().setSaldo(Usuario.usuarioLogueado.getTarjeta().getSaldo() - precioSuscripcion);
                 GestionClientes.guardarClientes();
+                crearFicheroSuscripcion(precioSuscripcion);
 
             }
         } else {
-            MostrarError(labelError, "Podrá modificar su suscripción en " + ChronoUnit.DAYS.between(LocalDate.now(), Usuario.usuarioLogueado.getSuscripcion().getFechaFin()) + " días.");
+            MostrarError(labelError, "Ya ha seleccionado un plan de suscripción. ");
     }//GEN-LAST:event_botonSuscripcionActionPerformed
     }
 
+    private boolean comprobarLimiteFecha(Date fecha) {
+
+        Calendar fechaActual = Calendar.getInstance();
+        fechaActual.set(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
+        Calendar limite = Calendar.getInstance();
+        limite.setTime(fecha);
+
+        return fechaActual.after(limite);
+    }
+
     private boolean cooldownCambiarSuscripcion() {
-        Date fechaLimite;
+        Date fechaLimite ;
         if (Usuario.usuarioLogueado.getSuscripcion() != null) {
 
             fechaLimite = Date.from(Usuario.usuarioLogueado.getSuscripcion().getFechaFin().atStartOfDay().toInstant(ZoneOffset.UTC));
-        } else {
-            return false;
         }
+        else 
+            return false;
 
         return comprobarLimiteFecha(fechaLimite);
 
     }
+
+    /**
+     * Método que crea un archivo de texto con la información de la suscripción del cliente cuando este se suscribe.
+     */
+    private void crearFicheroSuscripcion(double importe) {
+        try {
+            //Guardar el archivo en el escritorio con el nombre del DNI del usuario
+            File archivoSuscripcion = new File(System.getProperty("user.home") + "/Desktop",Usuario.usuarioLogueado.getDni()+".txt");
+            archivoSuscripcion.createNewFile();
+            
+            try (FileWriter fWriter = new FileWriter(archivoSuscripcion)) {
+                fWriter.append("Usuario: "+Usuario.usuarioLogueado.getNombre()+"\n");
+                fWriter.append("DNI: "+Usuario.usuarioLogueado.getDni()+"\n");
+                fWriter.append("Plan de Suscripcion: "+Usuario.usuarioLogueado.getSuscripcion().getTipoSuscripcion()+"\n");
+                fWriter.append("Importe total: "+importe+" € \n");
+                fWriter.close();
+            }
+
+        } catch (IOException e) {
+            MostrarError(labelError, "Error al crear el fichero");
+        }
+    }
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        principal.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     @Override
     public void MostrarError(JLabel label, String textoError) {

@@ -65,7 +65,7 @@ public class AgregarPelicula extends javax.swing.JFrame implements ErrorUI {
         botonActores = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Introducir");
+        setTitle("Añadir Película");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {

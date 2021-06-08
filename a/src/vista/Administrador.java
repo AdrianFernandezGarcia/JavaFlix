@@ -12,7 +12,7 @@ public class Administrador extends javax.swing.JFrame {
     private JFrame principal;
 
     /**
-     * Creates new form Sacar
+     * Constructor
      */
     public Administrador(JFrame v) {
         initComponents();

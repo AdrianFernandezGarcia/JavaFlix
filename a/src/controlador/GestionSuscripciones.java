@@ -18,10 +18,8 @@ import modelo.Suscripcion;
 public class GestionSuscripciones {
 
     public static ArrayList<Suscripcion> suscripciones = new ArrayList();
-
     public static void comprobarSuscripciones() {
         
-
         for (Cliente c : GestionClientes.getClientes()) {
             if (c.getSuscripcion() != null) {
                 if (comprobarFecha(c.getSuscripcion().getFechaFin())) {
@@ -30,7 +28,10 @@ public class GestionSuscripciones {
                     //Cobrar la suscripcion  
                     c.getTarjeta().setSaldo((c.getTarjeta().getSaldo() - c.getSuscripcion().getPrecio()));
                     //establecer la fecha del final de la suscripcion como fecha de inicio
-                    c.getSuscripcion().setFechaInicio(c.getSuscripcion().getFechaInicio().plusMonths(1));
+                    c.getSuscripcion().setFechaInicio(c.getSuscripcion().getFechaFin());
+                    //Ampliar suscripcion por 30 días
+                    c.getSuscripcion().setFechaFin(c.getSuscripcion().getFechaFin().plusMonths(1));
+                    //guardar cambios
                     GestionClientes.guardarClientes();
                     System.out.println("Saldo final: "+c.getTarjeta().getSaldo());
                 }
@@ -45,7 +46,7 @@ public class GestionSuscripciones {
         Calendar limite = Calendar.getInstance();
         limite.set(fecha.getYear(),fecha.getMonthValue(), fecha.getDayOfMonth());
         
-        return fechaActual.after(limite);
+        return ((fechaActual.after(limite)));
     }
 
 }

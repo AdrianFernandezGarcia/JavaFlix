@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernández García
  */
 public class Cliente implements Serializable{
     
@@ -21,6 +21,7 @@ public class Cliente implements Serializable{
     private TarjetaCredito tarjeta;
     private Suscripcion suscripcion;
     private ArrayList<Calificacion> calificaciones;
+    private ArrayList<Contenido> listaSeguimiento;
 
     public Cliente(String dni, String nombre, String correo, String clave, TarjetaCredito tarjeta) {
         this.dni = dni;
@@ -30,6 +31,7 @@ public class Cliente implements Serializable{
         this.tarjeta = tarjeta;
         this.suscripcion=null;
         this.calificaciones= new ArrayList();
+        this.listaSeguimiento= new ArrayList();
     }
     
     //GETTERS & SETTERS
@@ -89,6 +91,17 @@ public class Cliente implements Serializable{
     public void setCalificaciones(ArrayList<Calificacion> calificaciones) {
         this.calificaciones = calificaciones;
     }
+
+    public ArrayList<Contenido> getListaSeguimiento() {
+        return listaSeguimiento;
+    }
+
+    public void setListaSeguimiento(ArrayList<Contenido> listaSeguimiento) {
+        this.listaSeguimiento = listaSeguimiento;
+    }
+    
+    
+    
     
     @Override
     public boolean equals(Object obj) {
