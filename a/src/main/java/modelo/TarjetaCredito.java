@@ -13,10 +13,12 @@ import java.util.Date;
  * @author Adrián Fernández García
  */
 public class TarjetaCredito implements Serializable{
-    
+    //numero de la tarjeta de crédito.
     private String numero;
-    private Date fechaCaducidad;//mirar si hay que cambiarlo
-    private double saldo;//mirar si hay que cambiarlo por long
+    //fecha de caducidad .
+    private Date fechaCaducidad;
+    //saldo que el cliente tiene disponible en su tarjeta de crédito.
+    private double saldo;
     
     public TarjetaCredito(String numero, Date fechaCaducidad) {
         

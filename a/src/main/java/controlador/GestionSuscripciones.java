@@ -13,12 +13,12 @@ import modelo.Suscripcion;
 
 /**
  *
- * @author adria
+ * @author Adrián Fernádez García
  */
 public class GestionSuscripciones {
 
-    public static ArrayList<Suscripcion> suscripciones = new ArrayList();
-    public static void comprobarSuscripciones() {
+    public  ArrayList<Suscripcion> suscripciones = new ArrayList();
+    public void comprobarSuscripciones() {
         
         for (Cliente c : GestionClientes.getClientes()) {
             if (c.getSuscripcion() != null) {

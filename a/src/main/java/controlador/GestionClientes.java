@@ -16,7 +16,7 @@ import modelo.Cliente;
 
 /**
  *
- * @author adria
+ * @author Adrián Fernádez García
  */
 public class GestionClientes {
 

@@ -8,14 +8,16 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import modelo.ErrorUI;
 import modelo.Pelicula;
+
 /**
- * 
+ *
  * @author Adrián Fernández García
  */
 public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
@@ -59,13 +61,13 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
         tfAnio.setText(String.valueOf(pelicula.getAnio()));
         taSinopsis.setText(pelicula.getSinopsis());
         actores.addAll(pelicula.getActores());
-        archivoPortada = new File("imagenes/" + pelicula.getTitulo() + ".jpg");
+        archivoPortada = new File(gestor.getRuta(tfTitulo.getText()));
         tfDuracion.setText(String.valueOf(pelicula.getDuracionMinutos()));
         tfDirector.setText(pelicula.getDirector());
+        listadoActores();
 
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -84,13 +86,16 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
         taSinopsis = new javax.swing.JTextArea();
         tfAnio = new javax.swing.JFormattedTextField();
         tfActores = new javax.swing.JTextField();
-        tfDuracion = new javax.swing.JFormattedTextField();
         labelDirector = new javax.swing.JLabel();
         tfDirector = new javax.swing.JTextField();
         botonImagen = new javax.swing.JButton();
         labelPortada = new javax.swing.JLabel();
         cbGenero = new javax.swing.JComboBox<>();
         botonActores = new javax.swing.JButton();
+        botonBorrarActores = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        tfDuracion = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Administrador_GestionPelicula");
@@ -124,6 +129,7 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         taSinopsis.setColumns(2);
+        taSinopsis.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         taSinopsis.setLineWrap(true);
         taSinopsis.setRows(5);
         taSinopsis.setTabSize(5);
@@ -137,9 +143,6 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
         }
         tfAnio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        tfDuracion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        tfDuracion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
         labelDirector.setText("Director");
 
         botonImagen.setText("AÑADIR IMÁGEN");
@@ -151,7 +154,7 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
 
         labelPortada.setText("Portada");
 
-        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acción", "Aventuras", "Ciencia-Ficción", "Suspense" }));
+        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acción", "Aventuras", "Ciencia-Ficción", "Comedia", "Crimen", "Drama", "Misterio", "Suspense" }));
 
         botonActores.setText("AÑADIR ACTOR");
         botonActores.setPreferredSize(new java.awt.Dimension(6, 22));
@@ -161,102 +164,133 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
             }
         });
 
+        botonBorrarActores.setText("BORRAR ACTOR");
+        botonBorrarActores.setPreferredSize(new java.awt.Dimension(6, 22));
+        botonBorrarActores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBorrarActoresActionPerformed(evt);
+            }
+        });
+
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(jList1);
+
+        tfDuracion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(tfAnio))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(labelCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                                .addComponent(labelDNI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(tfTitulo)
-                                .addComponent(cbGenero, 0, 166, Short.MAX_VALUE))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(labelAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(tfAnio))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(labelCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+                            .addComponent(labelDNI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfTitulo)
+                            .addComponent(cbGenero, 0, 166, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelDirector)
-                            .addGap(18, 18, 18)
-                            .addComponent(tfDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(labelDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(tfDuracion)))
+                        .addComponent(jScrollPane1)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelActores)
-                            .addComponent(labelPortada))
+                        .addGap(151, 151, 151)
+                        .addComponent(labelActores)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(botonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                            .addComponent(tfActores))
+                        .addComponent(tfActores, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(botonBorrarActores, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                            .addComponent(botonActores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelDirector)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(217, 217, 217)
+                                        .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(tfDirector)
+                                        .addGap(254, 254, 254))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(labelDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(tfDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(labelPortada)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(14, 14, 14)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(62, 62, 62)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(50, 50, 50))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelDNI)
                                     .addComponent(tfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
+                                .addGap(31, 31, 31)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelCorreo)
-                                    .addComponent(botonImagen)
-                                    .addComponent(labelPortada)
                                     .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(labelActores)
                                     .addComponent(tfActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(49, 49, 49)))
-                        .addGap(39, 39, 39)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(botonBorrarActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelPortada)
+                            .addComponent(botonImagen))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(labelDuracion)
                                     .addComponent(tfDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(41, 41, 41)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(labelDirector)
-                                    .addComponent(tfDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(labelAnio)))))
-                .addContainerGap(39, Short.MAX_VALUE))
+                                .addGap(153, 153, 153))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(labelDirector)
+                                        .addComponent(tfDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(110, 110, 110))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelAnio))
+                        .addGap(259, 259, 259))))
         );
 
         jScrollPane1.getAccessibleContext().setAccessibleParent(jScrollPane1);
@@ -265,16 +299,16 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(757, 425));
+        setSize(new java.awt.Dimension(916, 439));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -286,6 +320,7 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
 
     /**
      * Comprueba que el String introducido no esté vacío.
+     *
      * @param cadena cadena a comprobar.
      * @return true si la cadena está vacío.
      */
@@ -295,8 +330,9 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
     }
 
     /**
-     * El título es el ID de los contenidos.
-     * Este método comprueba que el título a añadir no sea el de otro contenido ya añadido.
+     * El título es el ID de los contenidos. Este método comprueba que el título
+     * a añadir no sea el de otro contenido ya añadido.
+     *
      * @param titulo
      * @return true si el título está repetido.
      */
@@ -313,8 +349,10 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
     }
 
     /**
-     * Método que comprueba que todos los campos del registro han sido rellenados correctamente.
-     * @param evt 
+     * Método que comprueba que todos los campos del registro han sido
+     * rellenados correctamente.
+     *
+     * @param evt
      */
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
 
@@ -328,14 +366,14 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
             MostrarError("Se debe añadir al menos un actor.", ERROR_MESSAGE);
         } else if (tituloRepetido(tfTitulo.getText()) && (!modificar)) {
             MostrarError("El contenido introducido ya se encuentra en la plataforma.", ERROR_MESSAGE);
-        } //Si no hay nulos ni errores de formato: crear el contenidp e introducirlo en la lista.
+        } //Si no hay nulos ni errores de formato: crear el contenido e introducirlo en la lista.
         else {
             Pelicula peliculaRegistrada;
             System.out.println(cbGenero.getSelectedItem().toString());
             try {
 
                 peliculaRegistrada = new Pelicula(tfTitulo.getText(), taSinopsis.getText(), cbGenero.getSelectedItem().toString(), Integer.parseInt(tfAnio.getText()),
-                    actores, new ImageIcon(ImageIO.read(gestor.escalarImagen(archivoPortada, tfTitulo.getText()))),
+                        actores, new ImageIcon(ImageIO.read(gestor.escalarImagen(archivoPortada, tfTitulo.getText()))),
                         Integer.parseInt(tfDuracion.getText()), tfDirector.getText());
 
                 if (!modificar) {
@@ -357,14 +395,17 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
             tfActores.setText("");
             tfDuracion.setText("");
             tfDirector.setText("");
+            actores.clear();
+            listadoActores();
 
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
 
     /**
      * Método que añade la imágen de portada de la serie.ç
+     *
      * @see controlador.GestorImagenesContenido
-     * @param evt 
+     * @param evt
      */
     private void botonImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonImagenActionPerformed
 
@@ -373,17 +414,54 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
     }//GEN-LAST:event_botonImagenActionPerformed
 
     /**
-     * Método que comprueba que el campo de los actores no esté vacío y los añade a la lista de actores.
-     * @param evt 
+     * Método que comprueba que el campo de los actores no esté vacío y los
+     * añade a la lista de actores.
+     *
+     * @param evt
      */
     private void botonActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActoresActionPerformed
-        if (!(tfActores.getText().equals(""))) {
-            actores.add(tfActores.getText());
+
+        if (!(tfActores.getText().isEmpty())) {
+            if (!modificar) {
+                actores.add(tfActores.getText());
+
+            } else {
+                GestionContenido.contenidos.get(indice).getActores().add(tfActores.getText());
+                GestionContenido.guardarContenido();
+            }
             tfActores.setText("");
+            listadoActores();
         } else {
             MostrarError("El nombre del actor a añadir no puede estar vacío", ERROR_MESSAGE);
         }
+
+
     }//GEN-LAST:event_botonActoresActionPerformed
+
+    private void botonBorrarActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActoresActionPerformed
+
+        if (!modificar) {
+            actores.remove(jList1.getSelectedIndex());
+        } else {
+            GestionContenido.contenidos.get(indice).getActores().remove(jList1.getSelectedIndex());
+            GestionContenido.guardarContenido();
+        }
+        listadoActores();
+    }//GEN-LAST:event_botonBorrarActoresActionPerformed
+
+    public final void listadoActores() {
+
+        DefaultListModel modeloLista = new DefaultListModel();
+
+        if (!modificar) {
+            modeloLista.addAll(actores);
+        } else {
+            modeloLista.addAll(GestionContenido.contenidos.get(indice).getActores());
+        }
+
+        jList1.setModel(modeloLista);
+
+    }
 
     @Override
     public void MostrarError(String textoError, int tipoMensaje) {
@@ -392,11 +470,14 @@ public class OperacionesPelicula extends javax.swing.JFrame implements ErrorUI {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonActores;
+    private javax.swing.JButton botonBorrarActores;
     private javax.swing.JButton botonImagen;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbGenero;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelActores;
     private javax.swing.JLabel labelAnio;
     private javax.swing.JLabel labelCorreo;

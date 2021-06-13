@@ -13,16 +13,31 @@ import java.util.ArrayList;
  * @author Adrián Fernández García
  */
 public class Cliente implements Serializable{
-    
+    //dni del cliente
     private String dni;
+    //nombre del cliente
     private String nombre;
+    //correo del cliente
     private String correo;
+    //contraseña del cliente
     private String clave;
+    //tarjeta de crédito del cliente
     private TarjetaCredito tarjeta;
+    //suscripción elegida por el cliente
     private Suscripcion suscripcion;
+    //lista de calificaciones que ha realizado el cliente
     private ArrayList<Calificacion> calificaciones;
+    //lista de favoritos del cliente
     private ArrayList<Contenido> listaSeguimiento;
 
+    /**
+     * Constructor
+     * @param dni
+     * @param nombre
+     * @param correo
+     * @param clave
+     * @param tarjeta 
+     */
     public Cliente(String dni, String nombre, String correo, String clave, TarjetaCredito tarjeta) {
         this.dni = dni;
         this.nombre = nombre;

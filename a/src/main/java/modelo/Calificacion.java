@@ -12,15 +12,26 @@ import java.io.Serializable;
  * @author Adrián Fernández García
  */
 public class Calificacion implements Serializable {
-
+    //puntuacion que se establece a un contenido
     private int puntuacion;
+    //cliente que califica
     private Cliente cliente;
+    //contenido que es calificado
     private Contenido contenidoCalificado;
 
+    /**
+     * Constructor vacío
+     */
     public Calificacion(){
         
     }
     
+    /**
+     * Constructor
+     * @param puntuacion
+     * @param cliente
+     * @param contenidoCalificado 
+     */
     public Calificacion(int puntuacion, Cliente cliente, Contenido contenidoCalificado) {
         this.puntuacion = puntuacion;
         this.cliente = cliente;
@@ -51,7 +62,11 @@ public class Calificacion implements Serializable {
         this.contenidoCalificado = contenidoCalificado;
     }
 
-    
+    /**
+     * Sobrecarga del método equals
+     * @param obj objeto a comparar
+     * @return true si el contenido calificado y el cliente que lo califica son los mismos en las dos calificaciones
+     */
     @Override
     public boolean equals(Object obj) {
         

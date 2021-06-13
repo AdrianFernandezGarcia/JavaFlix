@@ -16,7 +16,7 @@ import java.util.Comparator;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernádez García
  */
 public class GestionContenido {
 

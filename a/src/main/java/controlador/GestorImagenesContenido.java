@@ -21,7 +21,7 @@ import vista.administrador.OperacionesPelicula;
 
 /**
  *
- * @author adria
+ * @author Adrián Fernádez García
  */
 public class GestorImagenesContenido {
     private final int VALOR_ALTURA=150;
@@ -55,7 +55,8 @@ public class GestorImagenesContenido {
     
     public File escalarImagen(File fileData,String nombreArchivo) {
         
-        String rutaEscritura="imagenes/"+nombreArchivo+".jpg";
+        String s="imagenes/"+nombreArchivo+".jpg";
+        String rutaEscritura = s.replace(":", "");
         try {
             BufferedImage imagen =ImageIO.read(fileData);
             
@@ -70,6 +71,11 @@ public class GestorImagenesContenido {
         }
         
         return new File(rutaEscritura);
+    }
+    
+    public String getRuta(String nombreArchivo){
+        String s="imagenes/"+nombreArchivo+".jpg";
+        return s.replace(":", "");
     }
     
     

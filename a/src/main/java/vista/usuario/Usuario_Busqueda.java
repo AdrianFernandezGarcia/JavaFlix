@@ -83,6 +83,7 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
         jLabel3 = new javax.swing.JLabel();
         botonCalificar = new javax.swing.JButton();
         botonFavoritos = new javax.swing.JButton();
+        botonRefrescar = new javax.swing.JButton();
 
         jLabel2.setText("Filtros");
 
@@ -115,7 +116,7 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
 
         tfGenero.setText("Genero");
 
-        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Acción", "Aventuras", "Ciencia-FIcción", "Suspense" }));
+        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Acción", "Aventuras", "Ciencia-Ficción", "Comedia", "Crimen", "Drama", "Misterio", "Suspense" }));
 
         labelActor.setText("Actor");
 
@@ -153,6 +154,13 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
             }
         });
 
+        botonRefrescar.setText("REFRESCAR");
+        botonRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRefrescarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -180,8 +188,7 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(cbGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(tfActor)
-                                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(17, 17, 17))
+                                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addGap(18, 18, 18)
@@ -201,7 +208,10 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
                                 .addComponent(botonCalificar))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(94, 94, 94)
-                                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(botonRefrescar)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -241,7 +251,9 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
                         .addComponent(botonCalificar)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 37, Short.MAX_VALUE)
+                        .addGap(0, 8, Short.MAX_VALUE)
+                        .addComponent(botonRefrescar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonFavoritos)))
@@ -295,7 +307,7 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
                     //Si el filtro no coincide y el elemento ya ha sido agregado antes, se marca el flag correspondiente como falso.
                     if (!(actor.equals(tfActor.getText())) && (busquedaFiltro.contains(c))) {
                         resultadoGenero = false;
-                    } else if ((c.getGenero().equals(cbGenero.getSelectedItem().toString())) && !(busquedaFiltro.contains(c))) {
+                    } else if ((actor.toLowerCase().equals(tfActor.getText().toLowerCase())) && !(busquedaFiltro.contains(c))) {
                         busquedaFiltro.add(c);
                     }
 
@@ -363,32 +375,14 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
 
     private void botonFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFavoritosActionPerformed
 
-        if (!(jList1.isSelectionEmpty())) {
-            if (!buscado) {
-
-                if (!(clienteIniciado.getListaSeguimiento().contains(GestionContenido.contenidos.get(jList1.getSelectedIndex())))) {
-                    Usuario.usuarioLogueado.getListaSeguimiento().add(GestionContenido.contenidos.get(jList1.getSelectedIndex()));
-                    GestionClientes.guardarClientes();
-                }
-
-            } else {
-                GestionContenido.contenidos.forEach((c) -> {
-                    for (Object co : modeloLista.toArray()) {
-                        if (c.equals((Contenido) co)) {
-                            if (!(clienteIniciado.getListaSeguimiento().contains((Contenido) co))) {
-                                Usuario.usuarioLogueado.getListaSeguimiento().add((Contenido) co);
-                                GestionClientes.guardarClientes();
-
-                            }
-
-                        }
-
-                    }
-                });
-            }
+        if (jList1.isSelectionEmpty()) {
+            MostrarError("Seleccione un contenido para añadirlo a favoritos.", ERROR_MESSAGE);
 
         } else {
-            //error
+            
+            Contenido c = (Contenido) modeloLista.get(jList1.getSelectedIndex());
+            
+            Usuario.usuarioLogueado.getListaSeguimiento().add(c);
 
         }
 
@@ -499,6 +493,10 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
 
     }//GEN-LAST:event_formWindowActivated
 
+    private void botonRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRefrescarActionPerformed
+        disposicionLista(GestionContenido.contenidos);
+    }//GEN-LAST:event_botonRefrescarActionPerformed
+
     @Override
     public void MostrarError(String textoError, int tipoMensaje) {
         JOptionPane.showMessageDialog(this, textoError, "Error", tipoMensaje);
@@ -508,6 +506,7 @@ public class Usuario_Busqueda extends javax.swing.JFrame implements ListaConteni
     private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonCalificar;
     private javax.swing.JButton botonFavoritos;
+    private javax.swing.JButton botonRefrescar;
     private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

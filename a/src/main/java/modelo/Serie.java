@@ -13,10 +13,22 @@ import javax.swing.ImageIcon;
  * @author Adrián Fernández García
  */
 public class Serie extends Contenido {
+    //numero de temporadas
     private int temporadas;
+    //lista de capítulos que tiene la serie
     private ArrayList<Capitulo> capitulos;
 
-    
+    /**
+     * Constructor
+     * @param titulo
+     * @param sinopsis
+     * @param genero
+     * @param anio
+     * @param actores
+     * @param portada
+     * @param temporadas
+     * @param capitulos 
+     */
      public Serie(String titulo, String sinopsis, String genero, int anio, ArrayList<String> actores,ImageIcon portada,int temporadas, ArrayList<Capitulo> capitulos) {
         this.titulo = titulo;
         this.sinopsis = sinopsis;

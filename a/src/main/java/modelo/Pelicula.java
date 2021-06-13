@@ -14,10 +14,23 @@ import javax.swing.ImageIcon;
  * @author Adrián Fernández García
  */
 public class Pelicula extends Contenido {
-    
+    //duracion en minutos de la película
     private int duracionMinutos;
+    //director de la película
     private String director;
     
+    /**
+     * Constructor
+     * @param titulo
+     * @param sinopsis
+     * @param genero
+     * @param anio
+     * @param actores
+     * @param portada
+     * @param duracionMinutos
+     * @param director
+     * @throws IOException 
+     */
     public Pelicula(String titulo, String sinopsis, String genero, int anio, ArrayList<String> actores,ImageIcon portada, int duracionMinutos, String director) throws IOException {
         this.titulo = titulo;
         this.sinopsis = sinopsis;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -65,8 +66,11 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
         taSinopsis.setText(serie.getSinopsis());
         archivoPortada = new File("imagenes/" + serie.getTitulo() + ".jpg");
         tfNumTem.setText(String.valueOf(serie.getTemporadas()));
-        actores.addAll(serie.getActores());
         capitulos.addAll(serie.getCapitulos());
+        actores.addAll(serie.getActores());
+        listadoActores();
+        listadoCapitulos();
+        
 
     }
 
@@ -103,6 +107,12 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
         botonImagen = new javax.swing.JButton();
         cbGenero = new javax.swing.JComboBox<>();
         botonActores = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaActores = new javax.swing.JList<>();
+        botonBorrarActores = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listaCapitulos = new javax.swing.JList<>();
+        botonBorrarCapitulo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Administrador_GestionSerie");
@@ -136,10 +146,12 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         taSinopsis.setColumns(2);
+        taSinopsis.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         taSinopsis.setLineWrap(true);
         taSinopsis.setRows(5);
         taSinopsis.setTabSize(5);
         taSinopsis.setAutoscrolls(false);
+        taSinopsis.setPreferredSize(new java.awt.Dimension(100, 80));
         jScrollPane1.setViewportView(taSinopsis);
 
         try {
@@ -149,11 +161,7 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
         }
         tfAnio.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        try {
-            tfNumTem.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        tfNumTem.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         tfNumTem.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         labelDirector.setText("Titulo");
@@ -182,13 +190,31 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
             }
         });
 
-        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acción", "Aventuras", "Ciencia-FIcción", "Suspense" }));
+        cbGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acción", "Aventuras", "Ciencia-Ficción", "Comedia", "Crimen", "Drama", "Misterio", "Suspense" }));
 
         botonActores.setText("AÑADIR ACTOR");
         botonActores.setPreferredSize(new java.awt.Dimension(6, 22));
         botonActores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonActoresActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setViewportView(listaActores);
+
+        botonBorrarActores.setText("BORRAR ACTOR");
+        botonBorrarActores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBorrarActoresActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(listaCapitulos);
+
+        botonBorrarCapitulo.setText("BORRAR");
+        botonBorrarCapitulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBorrarCapituloActionPerformed(evt);
             }
         });
 
@@ -215,30 +241,15 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
                         .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(115, 115, 115)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(labelPortada)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(labelActores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(labelDuracion)
-                                            .addGap(7, 7, 7)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(labelPortada)
-                                        .addGap(28, 28, 28)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tfNumTem)
-                                    .addComponent(tfActores, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                                    .addComponent(botonImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(3, 3, 3))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(labelDirector, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,69 +259,95 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
                                         .addComponent(labelDirector1)
                                         .addGap(24, 24, 24)
                                         .addComponent(tfDuracionCap)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(botonBorrarCapitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonCapitulos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(42, 42, 42))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelActores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonCapitulos)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(106, 106, 106))))
+                                .addComponent(tfActores, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(botonBorrarActores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botonActores, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                                .addGap(28, 28, 28))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(labelDuracion)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(tfNumTem, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(61, 61, 61))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDNI)
+                    .addComponent(tfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelActores)
+                    .addComponent(tfActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonBorrarActores)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelCorreo)
+                    .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDuracion)
+                    .addComponent(tfNumTem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelDNI)
-                            .addComponent(tfTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelCorreo)
-                            .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(51, 51, 51)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelDuracion)
-                                .addComponent(tfNumTem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelActores)
-                            .addComponent(tfActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botonActores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelPortada)
+                            .addComponent(botonImagen)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addGap(17, 17, 17)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelAnio))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelAnio))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelCorreo1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(botonImagen)
-                            .addComponent(labelPortada))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(labelDirector)
-                                    .addComponent(tfTituloCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(labelDirector1)
-                                    .addComponent(tfDuracionCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(buttonCapitulos, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)))
-                        .addGap(30, 30, 30)
-                        .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(92, 92, 92))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDirector)
+                    .addComponent(tfTituloCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonCapitulos, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDirector1)
+                    .addComponent(tfDuracionCap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonBorrarCapitulo))
+                .addGap(28, 28, 28)
+                .addComponent(botonAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
 
@@ -327,7 +364,7 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(739, 425));
+        setSize(new java.awt.Dimension(916, 509));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -344,13 +381,19 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
      * @param evt
      */
     private void botonActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActoresActionPerformed
-        if (!(tfActores.getText().equals(""))) {
-            actores.add(tfActores.getText());
+         if (!(tfActores.getText().isEmpty())) {
+            if (!modificar) {
+                actores.add(tfActores.getText());
+
+            } else {
+                GestionContenido.contenidos.get(indice).getActores().add(tfActores.getText());
+                GestionContenido.guardarContenido();
+            }
+            tfActores.setText("");
+            listadoActores();
         } else {
             MostrarError("El nombre del actor a añadir no puede estar vacío", ERROR_MESSAGE);
         }
-
-        tfActores.setText("");
     }//GEN-LAST:event_botonActoresActionPerformed
 
     /**
@@ -371,12 +414,18 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
      */
     private void buttonCapitulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCapitulosActionPerformed
 
-        if (!(tfTituloCap.getText().equals(""))) {
+        if (!(tfTituloCap.getText().isEmpty())&&!(tfDuracionCap.getText().equals(""))) {
 
-            if (!(tfDuracionCap.getText().equals(""))) {
+            if (!modificar) {
                 capitulos.add(new Capitulo(tfTituloCap.getText(), Integer.parseInt(tfDuracionCap.getText())));
-            }
 
+            } else {
+                Serie s= (Serie)GestionContenido.contenidos.get(indice);
+                s.getCapitulos().add(new Capitulo(tfTituloCap.getText(), Integer.parseInt(tfDuracionCap.getText())));
+                GestionContenido.guardarContenido();
+            }
+            
+            listadoCapitulos();
             //resetear los campos
             tfTituloCap.setText("");
             tfDuracionCap.setText("");
@@ -384,6 +433,7 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
         } else {
             MostrarError("Ni el título ni la duración del capítulo pueden estar vacíos.", ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_buttonCapitulosActionPerformed
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
@@ -399,7 +449,8 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
             Serie serieRegistrada;
 
             try {
-                serieRegistrada = new Serie(tfTitulo.getText(), taSinopsis.getText(), cbGenero.getSelectedItem().toString(), Integer.parseInt(tfAnio.getText()), actores, new ImageIcon(ImageIO.read(archivoPortada)), Integer.parseInt(tfNumTem.getText()), capitulos);
+                serieRegistrada = new Serie(tfTitulo.getText(), taSinopsis.getText(), cbGenero.getSelectedItem().toString(), Integer.parseInt(tfAnio.getText()),
+                        actores, new ImageIcon(ImageIO.read(gestor.escalarImagen(archivoPortada, tfTitulo.getText()))), Integer.parseInt(tfNumTem.getText()), capitulos);
                  if (!modificar) {
                     GestionContenido.crearContenido(serieRegistrada);
                 } else {
@@ -418,9 +469,62 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
             tfAnio.setText("");
             tfActores.setText("");
             tfNumTem.setText("");
+            actores.clear();
+            capitulos.clear();
+            listadoActores();
+            listadoCapitulos();
     }//GEN-LAST:event_botonAceptarActionPerformed
     }
+    private void botonBorrarActoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActoresActionPerformed
+         if (!modificar) {
+            actores.remove(listaActores.getSelectedIndex());
+        } else {
+            GestionContenido.contenidos.get(indice).getActores().remove(listaActores.getSelectedIndex());
+            GestionContenido.guardarContenido();
+        }
+        listadoActores();
+    }//GEN-LAST:event_botonBorrarActoresActionPerformed
 
+    private void botonBorrarCapituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarCapituloActionPerformed
+         if (!modificar) {
+            capitulos.remove(listaCapitulos.getSelectedIndex());
+        } else {
+            Serie s= (Serie)GestionContenido.contenidos.get(indice);
+            s.getCapitulos().remove(listaCapitulos.getSelectedIndex());
+            GestionContenido.guardarContenido();
+        }
+        listadoCapitulos();
+    }//GEN-LAST:event_botonBorrarCapituloActionPerformed
+    
+    public final void listadoActores() {
+
+        DefaultListModel modeloLista = new DefaultListModel();
+
+        if (!modificar) {
+            modeloLista.addAll(actores);
+        } else {
+            modeloLista.addAll(GestionContenido.contenidos.get(indice).getActores());
+        }
+
+        listaActores.setModel(modeloLista);
+
+    }
+    
+    public final void listadoCapitulos() {
+
+        DefaultListModel modeloLista = new DefaultListModel();
+
+        if (!modificar) {
+            modeloLista.addAll(capitulos);
+        } else {
+            Serie s= (Serie)GestionContenido.contenidos.get(indice);
+            modeloLista.addAll(s.getCapitulos());
+        }
+
+        listaCapitulos.setModel(modeloLista);
+
+    }
+    
     private boolean comprobarNulo(String cadena) {
 
         return cadena.equals("");
@@ -445,12 +549,16 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;
     private javax.swing.JButton botonActores;
+    private javax.swing.JButton botonBorrarActores;
+    private javax.swing.JButton botonBorrarCapitulo;
     private javax.swing.JButton botonImagen;
     private javax.swing.JButton buttonCapitulos;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbGenero;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelActores;
     private javax.swing.JLabel labelAnio;
     private javax.swing.JLabel labelCorreo;
@@ -460,6 +568,8 @@ public class OperacionesSerie extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JLabel labelDirector1;
     private javax.swing.JLabel labelDuracion;
     private javax.swing.JLabel labelPortada;
+    private javax.swing.JList<String> listaActores;
+    private javax.swing.JList<String> listaCapitulos;
     private javax.swing.JTextArea taSinopsis;
     private javax.swing.JTextField tfActores;
     private javax.swing.JFormattedTextField tfAnio;

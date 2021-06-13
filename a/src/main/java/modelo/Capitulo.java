@@ -12,10 +12,16 @@ import java.io.Serializable;
  * @author Adrián Fernández García
  */
 public class Capitulo implements Serializable{
-    
+    //titulo del capitulo
     private String titulo;
+    //duracion el minutos del capitulo
     private int duracionMinutos;
 
+    /**
+     * Constructor
+     * @param titulo
+     * @param duracionMinutos 
+     */
     public Capitulo(String titulo, int duracionMinutos) {
         this.titulo = titulo;
         this.duracionMinutos = duracionMinutos;
@@ -37,6 +43,11 @@ public class Capitulo implements Serializable{
 
     public void setDuracionMinutos(int duracionMinutos) {
         this.duracionMinutos = duracionMinutos;
+    }
+
+    @Override
+    public String toString() {
+        return this.titulo+"     Duración: "+this.duracionMinutos;
     }
     
     

@@ -24,7 +24,9 @@ public class Administrador_Usuarios extends javax.swing.JFrame {
         
     }
 
-    //TODO INTERFAZ
+    /**
+     * 
+     */
     private void disposicionLista() {
 
         //Refrescar la lista

@@ -10,13 +10,21 @@ import javax.swing.ImageIcon;
  */
 public abstract class Contenido implements Serializable, Comparable<Contenido> {
 
+    //titulo del contenido
     protected String titulo;
+    //sinopsis del contenido
     protected String sinopsis;
+    //genero del contenido
     protected String genero;
+    //año de lanzamiento del contenido
     protected int anio;
+    //lista de actores del contenido
     protected ArrayList<String> actores;
+    //imágen del portada del contenido
     protected ImageIcon portada;
+    //lista de las calificaciones que ha recibido el contenido
     protected ArrayList<Calificacion> calificaciones = new ArrayList();
+    //media de las puntuaciones de todas las calificaciones
     protected double mediaPuntuaciones = 0;
     
     

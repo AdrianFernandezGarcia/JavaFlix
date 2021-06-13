@@ -4,10 +4,14 @@ import vista.administrador.Administrador;
 import controlador.GestionClientes;
 import controlador.GestionContenido;
 import controlador.GestionSuscripciones;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import modelo.Cliente;
 import modelo.ErrorUI;
 import vista.usuario.Usuario;
@@ -18,6 +22,8 @@ import vista.usuario.Usuario;
  */
 public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
 
+    private final GestionSuscripciones suscripciones = new GestionSuscripciones();
+
     /**
      * Constructor
      */
@@ -25,11 +31,10 @@ public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
         GestionClientes.cargarClientes();
         GestionContenido.cargarContenido();
         initComponents();
-        GestionSuscripciones.comprobarSuscripciones();
+        suscripciones.comprobarSuscripciones();
 
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -141,19 +146,20 @@ public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
     }//GEN-LAST:event_formWindowClosing
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-
         comprobarLogin();
+        tfCorreo.setText("");
+        pfClave.setText("");
     }//GEN-LAST:event_botonAceptarActionPerformed
 
     private void botonRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistroActionPerformed
         Registro i = new Registro(this);
     }//GEN-LAST:event_botonRegistroActionPerformed
 
-    
     /**
-     * Método que comprueba que tipo de usuario va a iniciar sesion:
-     *      - Si se inicia sesión con el correo y clave de administrador se abrirá el modo administrador.
-     *      - Si se inicia sesión con otro correo se comprobará que el correo esté registrado y ,si es así, se inicia sesión como usuario.
+     * Método que comprueba que tipo de usuario va a iniciar sesion: - Si se
+     * inicia sesión con el correo y clave de administrador se abrirá el modo
+     * administrador. - Si se inicia sesión con otro correo se comprobará que el
+     * correo esté registrado y ,si es así, se inicia sesión como usuario.
      */
     public void comprobarLogin() {
 
@@ -198,9 +204,17 @@ public class VentanaPrincipal extends javax.swing.JFrame implements ErrorUI {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         java.awt.EventQueue.invokeLater(() -> {
             new VentanaPrincipal().setVisible(true);
         });
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;

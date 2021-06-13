@@ -21,6 +21,7 @@ import modelo.TarjetaCredito;
 public class Registro extends javax.swing.JFrame implements ErrorUI {
 
     private final JFrame principal;
+    //lista en la que se añaden los datos que se quieren saber si están repetidos. 
     private ArrayList<String> datos = new ArrayList();
 
     /**
