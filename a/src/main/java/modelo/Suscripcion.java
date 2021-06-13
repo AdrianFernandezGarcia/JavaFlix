@@ -10,18 +10,19 @@ import java.time.LocalDate;
 
 /**
  *
- * @author adria
+ * @author Adrián Fernández García
  */
 public class Suscripcion implements Serializable {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private int tipoSuscripcion;
+    public enum TipoSuscripcion{Basica,Estandar,Premium;}
+    private final TipoSuscripcion tipoSuscripcion;
     private final double precio;
 
-    public Suscripcion(LocalDate fechaInicio,LocalDate fechaFin, int tipoSuscripcion, double precio) {
+    public Suscripcion(LocalDate fechaInicio,LocalDate fechaFin, String tipoSuscripcion, double precio) {
         this.fechaInicio = fechaInicio;
         this.fechaFin=fechaFin;
-        this.tipoSuscripcion = tipoSuscripcion;
+        this.tipoSuscripcion= TipoSuscripcion.valueOf(tipoSuscripcion);
         this.precio=precio;
     }
 
@@ -40,15 +41,12 @@ public class Suscripcion implements Serializable {
     public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
-    
 
-    public int getTipoSuscripcion() {
+    public TipoSuscripcion getTipoSuscripcion() {
         return tipoSuscripcion;
     }
+    
 
-    public void setTipoSuscripcion(int tipoSuscripcion) {
-        this.tipoSuscripcion = tipoSuscripcion;
-    }
 
     public double getPrecio() {
         return precio;

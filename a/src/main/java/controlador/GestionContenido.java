@@ -19,26 +19,23 @@ import java.util.Comparator;
  * @author Adrián
  */
 public class GestionContenido {
-    
-    public static ArrayList<Contenido> contenidos= new ArrayList();
-    
-    
-    public static void crearContenido (Contenido contenido){
-        
+
+    public static ArrayList<Contenido> contenidos = new ArrayList();
+
+    public static void crearContenido(Contenido contenido) {
+
         contenidos.add(contenido);
         guardarContenido();
-                
+
     }
-    
-    
-    public static void modificarContenido(Contenido contenido, int index){
-        
+
+    public static void modificarContenido(Contenido contenido, int index) {
+
         contenidos.set(index, contenido);
         guardarContenido();
-               
+
     }
-    
-    
+
     public static void cargarContenido() {
         try {
             //Lectura de los clientes
@@ -47,7 +44,7 @@ public class GestionContenido {
             contenidos = (ArrayList<Contenido>) oisPer.readObject();
             contenidos.sort(Comparator.reverseOrder());
             istreamPer.close();
-            
+
         } catch (IOException ioe) {
             System.out.println("Error de IO: " + ioe.getMessage());
         } catch (ClassNotFoundException cnfe) {
@@ -60,24 +57,25 @@ public class GestionContenido {
     public static void guardarContenido() {
         try {
             //Si hay datos los guardamos...
-            if (!contenidos.isEmpty()) {
-                try ( 
-                    //Serialización
-                    FileOutputStream ostreamPer = new FileOutputStream("contenido.dat")) {
-                    ObjectOutputStream oosPer = new ObjectOutputStream(ostreamPer);
-                    oosPer.writeObject(contenidos);
-                    ostreamPer.close();
-                }
-            } else {
-                
-            }
+            try (FileOutputStream ostreamPer = new FileOutputStream("contenido.dat")) {
 
+                ObjectOutputStream oosPer = new ObjectOutputStream(ostreamPer);
+                if (!contenidos.isEmpty()) {
+                    //escribir el contenido
+                    oosPer.writeObject(contenidos);
+                } else {
+                    //guardar la lsita como una lista vacía
+                    contenidos = new ArrayList<>();
+                    oosPer.writeObject(contenidos);
+                }
+                //cerrar stream
+                ostreamPer.close();
+            }
         } catch (IOException ioe) {
             System.out.println("Error de IO: " + ioe.getMessage());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }//fin guardarDatos
-    
-    
+
 }

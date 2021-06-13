@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import static controlador.GestionContenido.contenidos;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,27 +19,25 @@ import modelo.Cliente;
  * @author adria
  */
 public class GestionClientes {
-    public static ArrayList<Cliente> clientes= new ArrayList<Cliente>();
-    
 
-    public static void IntroducirCliente(Cliente cliente){
+    public static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+
+    public static void IntroducirCliente(Cliente cliente) {
         clientes.add(cliente);
         guardarClientes();
     }
-    
-    
-    public static  ArrayList<Cliente> getClientes() {
+
+    public static ArrayList<Cliente> getClientes() {
         return clientes;
     }
 
     public static void cargarClientes() {
-        try {
-            //Lectura de los clientes
-            FileInputStream istreamPer = new FileInputStream("clientes.dat");
+        //Lectura de los clientes
+        try(FileInputStream istreamPer = new FileInputStream("clientes.dat");) {
             ObjectInputStream oisPer = new ObjectInputStream(istreamPer);
             clientes = (ArrayList<Cliente>) oisPer.readObject();
             istreamPer.close();
-            
+
         } catch (IOException ioe) {
             System.out.println("Error de IO: " + ioe.getMessage());
         } catch (ClassNotFoundException cnfe) {
@@ -46,23 +45,26 @@ public class GestionClientes {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-    }//fin cargarDatos
+    }
 
     public static void guardarClientes() {
-        try {
+        try (FileOutputStream ostreamPer = new FileOutputStream("clientes.dat")) {
             //Si hay datos los guardamos...
+            ObjectOutputStream oosPer = new ObjectOutputStream(ostreamPer);
+
             if (!clientes.isEmpty()) {
-                try ( 
-                 
-                    //Serialización
-                    FileOutputStream ostreamPer = new FileOutputStream("clientes.dat")) {
-                    ObjectOutputStream oosPer = new ObjectOutputStream(ostreamPer);
-                    oosPer.writeObject(clientes);
-                    ostreamPer.close();
-                }
+                //Si la lista no está vacía, guardar la lista de clientes.
+                oosPer.writeObject(clientes);
+                ostreamPer.close();
+
             } else {
-                
+                //Si se han borrado todos los clientes o no hay, entoncesguardar la lista como una lista vacía
+                contenidos = new ArrayList<>();
+                oosPer.writeObject(contenidos);
+
             }
+
+            ostreamPer.close();
 
         } catch (IOException ioe) {
             System.out.println("Error de IO: " + ioe.getMessage());

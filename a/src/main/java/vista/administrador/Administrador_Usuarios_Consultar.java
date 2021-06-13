@@ -1,15 +1,15 @@
-package vista;
+package vista.administrador;
 
 import controlador.GestionClientes;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import javax.swing.JFrame;
-
+/**
+ * 
+ * @author Adrián Fernández García
+ */
 public class Administrador_Usuarios_Consultar extends javax.swing.JFrame {
 
     private final JFrame principal;
-    private ArrayList<String> datos = new ArrayList();
-
     /**
      * Creates new form Introducir
      * @param v
@@ -62,7 +62,7 @@ public class Administrador_Usuarios_Consultar extends javax.swing.JFrame {
         labelDNI = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Información del Usuario");
+        setTitle("Introducir");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {

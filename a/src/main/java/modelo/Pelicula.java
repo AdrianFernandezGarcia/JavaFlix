@@ -11,14 +11,14 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernández García
  */
 public class Pelicula extends Contenido {
     
-    private String duracionMinutos;
+    private int duracionMinutos;
     private String director;
     
-    public Pelicula(String titulo, String sinopsis, String genero, int anio, ArrayList<String> actores,ImageIcon portada, String duracionMinutos, String director) throws IOException {
+    public Pelicula(String titulo, String sinopsis, String genero, int anio, ArrayList<String> actores,ImageIcon portada, int duracionMinutos, String director) throws IOException {
         this.titulo = titulo;
         this.sinopsis = sinopsis;
         this.genero = genero;
@@ -31,11 +31,11 @@ public class Pelicula extends Contenido {
     
     //GETTERS & SETTERS
 
-    public String getDuracionMinutos() {
+    public int getDuracionMinutos() {
         return duracionMinutos;
     }
 
-    public void setDuracionMinutos(String duracionMinutos) {
+    public void setDuracionMinutos(int duracionMinutos) {
         this.duracionMinutos = duracionMinutos;
     }
 

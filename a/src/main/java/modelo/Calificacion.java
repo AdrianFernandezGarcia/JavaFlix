@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author adria
+ * @author Adrián Fernández García
  */
 public class Calificacion implements Serializable {
 
@@ -17,6 +17,10 @@ public class Calificacion implements Serializable {
     private Cliente cliente;
     private Contenido contenidoCalificado;
 
+    public Calificacion(){
+        
+    }
+    
     public Calificacion(int puntuacion, Cliente cliente, Contenido contenidoCalificado) {
         this.puntuacion = puntuacion;
         this.cliente = cliente;

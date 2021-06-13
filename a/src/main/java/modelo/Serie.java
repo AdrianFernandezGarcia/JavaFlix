@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernández García
  */
 public class Serie extends Contenido {
     private int temporadas;

@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernández García
  */
 public abstract class Contenido implements Serializable, Comparable<Contenido> {
 
@@ -18,6 +18,8 @@ public abstract class Contenido implements Serializable, Comparable<Contenido> {
     protected ImageIcon portada;
     protected ArrayList<Calificacion> calificaciones = new ArrayList();
     protected double mediaPuntuaciones = 0;
+    
+    
 
     //GETTERS & SETTERS
     public String getTitulo() {
@@ -93,22 +95,33 @@ public abstract class Contenido implements Serializable, Comparable<Contenido> {
         if ((this.anio > t.anio) && (this.mediaPuntuaciones > t.mediaPuntuaciones)) {
 
             return 1;
-        } else if ((this.anio < t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)) {
-
-            return -1;
-        } else if ((this.anio == t.anio) && (this.mediaPuntuaciones > t.mediaPuntuaciones)) {
+        }
+        else if ((this.anio == t.anio) && (this.mediaPuntuaciones > t.mediaPuntuaciones)) {
             return 1;
-        } else if ((this.anio == t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)) {
+        } 
+        else if ((this.anio > t.anio) && (this.mediaPuntuaciones == t.mediaPuntuaciones)) {
+            return 1;
+        } 
+        else if ((this.anio < t.anio) && (this.mediaPuntuaciones == t.mediaPuntuaciones)) {
             return -1;
         } 
-        
-        
+        else if((this.anio > t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)){
+            return -1;
+        }
+        else if ((this.anio < t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)) {
+
+            return -1;
+        }
+        else if ((this.anio == t.anio) && (this.mediaPuntuaciones < t.mediaPuntuaciones)) {
+            return -1;
+        }
         else {
 
             return 0;
         }
+        
+    
     }
-
     @Override
     public boolean equals(Object obj) {
 

@@ -8,25 +8,30 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import modelo.Cliente;
 import modelo.ErrorUI;
 import modelo.TarjetaCredito;
 
+/**
+ * 
+ * @author Adrián Fernández García
+ */
 public class Registro extends javax.swing.JFrame implements ErrorUI {
 
     private final JFrame principal;
     private ArrayList<String> datos = new ArrayList();
 
     /**
-     * Creates new form Introducir
+     * Constructor
+     * @param v ventana anterior
      */
     public Registro(JFrame v) {
         initComponents();
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
-        this.labelError.setVisible(false);
 
         //añadir todos los dni, correos y tarjetas a una lista para durante el registro comprobar si el que se introduce está disponible.
         if (!(GestionClientes.getClientes().isEmpty())) {
@@ -41,17 +46,21 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
 
     }
 
-    @Override
-    public void MostrarError(JLabel label, String textoError) {
-        label.setText(textoError);
-        label.setVisible(true);
-    }
-
+    
+    /**
+     * Comprueba que el String introducido no esté vacío.
+     * @param cadena cadena a comprobar.
+     * @return true si la cadena está vacío.
+     */
     private boolean comprobarNulo(String cadena) {
 
         return cadena.isEmpty();
     }
 
+    /**
+     * Método que comprueba que el formato del correo sea correcto y este no esté siendo usado por otro cliente.
+     * @return true si el correo no está siendo usado por otro cliente y cumple con el formato.
+     */
     private boolean comprobarCorreo() {
         Pattern patronCorreo = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = patronCorreo.matcher(tfCorreo.getText());
@@ -61,21 +70,25 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
             if ((matcher.find())) {
                 return true;
             } else {
-                MostrarError(labelError, "El formato del correo debe ser el siguiente: aa@org.dom");
+                MostrarError("El formato del correo debe ser el siguiente: aa@org.dom",ERROR_MESSAGE);
                 return false;
             }
 
         } else {
-            MostrarError(labelError, "El correo introducido no se encuentra disponible.");
+            MostrarError("El correo introducido no se encuentra disponible.",ERROR_MESSAGE);
             return false;
         }
 
     }
 
+    /**
+     * Método que comprueba que la tarjeta de crédito introducida no sea de otro cliente.
+     * @return true si la tarjeta no es de otro cliente.
+     */
     private boolean comprobarTarjeta() {
 
         if(datos.contains(tfTarjeta.getText())){
-            MostrarError(labelError, "El número de tarjeta introducido no se encuentra disponible.");
+            MostrarError("El número de tarjeta introducido no se encuentra disponible.",ERROR_MESSAGE);
             return false;
         }
         
@@ -84,10 +97,14 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
         }
     }
     
+    /**
+     * Método que comprueba si el dni ya lo ha introducido otro cliente
+     * @return true si el dni no está siendo usado por otro cliente.
+     */
     private boolean comprobarDNI(){
         
         if(datos.contains(tfDNI.getText())){
-            MostrarError(labelError, "El DNI introducido no se encuentra disponible.");
+            MostrarError("El DNI introducido no se encuentra disponible.",ERROR_MESSAGE);
             return false;
         }
         
@@ -97,12 +114,16 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
        
     }
     
+    /**
+     * Comprueba que el formato de una fecha es correcto
+     * @return true si coincide con el patrón.
+     */
     private boolean comprobarFecha(){
         Pattern patronFecha = Pattern.compile("^(0[1-9]|1[012])/([0-9]{2})$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = patronFecha.matcher(tfFechaCad.getText());
         
         if(!(matcher.matches())){
-            MostrarError(labelError, "El mes no puede ser mayor que 12.");
+            MostrarError("El mes no puede ser mayor que 12.",ERROR_MESSAGE);
             return false;
         }
         
@@ -127,7 +148,6 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
         pfClave = new javax.swing.JPasswordField();
         tfFechaCad = new javax.swing.JFormattedTextField();
         tfDNI = new javax.swing.JFormattedTextField();
-        labelError = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         tfTarjeta = new javax.swing.JFormattedTextField();
         labelTarjeta = new javax.swing.JLabel();
@@ -138,7 +158,7 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
         botonAceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registro de Usuario");
+        setTitle("JavaFlix-Registro de Usuario");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -163,10 +183,6 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
             ex.printStackTrace();
         }
         tfDNI.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        labelError.setForeground(new java.awt.Color(204, 0, 0));
-        labelError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelError.setText("jLabel2");
 
         jLabel1.setText("FC");
 
@@ -196,20 +212,15 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelCorreo1, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pfClave)
-                            .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(438, 438, 438)))
-                .addContainerGap())
+                .addGap(35, 35, 35)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelCorreo1, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pfClave)
+                    .addComponent(tfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(448, 448, 448))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(315, 315, 315)
                 .addComponent(botonAceptar)
@@ -247,9 +258,7 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
                     .addComponent(pfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(botonAceptar)
-                .addGap(35, 35, 35)
-                .addComponent(labelError)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -290,12 +299,16 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
         principal.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    /**
+     * Método que comprueba que todos los campos del registro han sido rellenados correctamente.
+     * @param evt 
+     */
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
         String valorClave = String.valueOf(pfClave.getPassword());//Valor de la contraseña parseado a String.
 
         //Caso en el que alguno de los campos no ha sido rellenado.
         if ((comprobarNulo(tfDNI.getText())) || (comprobarNulo(tfNombre.getText())) || (comprobarNulo(valorClave)) || (comprobarNulo(tfTarjeta.getText()))) {
-            MostrarError(labelError, "Todos los campos deben ser rellenados");
+            MostrarError("Todos los campos deben ser rellenados",ERROR_MESSAGE);
         } 
         //Comprobar que el numero de tarjeta no haya sido introducido antes.
         else if (!(comprobarTarjeta())) {
@@ -323,13 +336,18 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
                 GestionClientes.IntroducirCliente(clienteRegistrado);
                 dispose();//Cerrar la ventana pero no la app.
             } catch (ParseException ex) {
-                MostrarError(labelError, "El formato de la fecha debe ser el siguiente : MM/AA");
+                MostrarError("El formato de la fecha debe ser el siguiente : MM/AA",ERROR_MESSAGE);
 
             }
 
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
 
+    @Override
+    public void MostrarError(String textoError , int tipoMensaje) {
+        JOptionPane.showMessageDialog(this, textoError, "Error", tipoMensaje);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAceptar;
     private javax.swing.JLabel jLabel1;
@@ -337,7 +355,6 @@ public class Registro extends javax.swing.JFrame implements ErrorUI {
     private javax.swing.JLabel labelCorreo;
     private javax.swing.JLabel labelCorreo1;
     private javax.swing.JLabel labelDNI;
-    private javax.swing.JLabel labelError;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelTarjeta;
     private javax.swing.JPasswordField pfClave;

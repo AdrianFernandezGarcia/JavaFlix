@@ -1,19 +1,33 @@
-package vista;
+package vista.administrador;
 
 import controlador.GestionClientes;
 import controlador.GestionContenido;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import modelo.Calificacion;
 import modelo.Cliente;
 import modelo.Contenido;
+import modelo.ErrorUI;
+import modelo.ListaContenidos;
+import modelo.PlantillaLista;
 import modelo.Pelicula;
 import modelo.Serie;
-
-public class Administrador_Contenido extends javax.swing.JFrame {
+/**
+ * 
+ * @author Adrián Fernández García
+ */
+public class Administrador_Contenido extends javax.swing.JFrame implements ListaContenidos, ErrorUI {
 
     private final JFrame principal;
+    //modelo del JList
+    private DefaultListModel modeloLista = new DefaultListModel();
 
     /**
      * Creates new form Introducir
@@ -25,22 +39,7 @@ public class Administrador_Contenido extends javax.swing.JFrame {
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
-        this.disposicionLista(GestionContenido.contenidos);
-
-    }
-
-    private void disposicionLista(ArrayList<Contenido> lista) {
-
-        //Crear un modelo de lista, rellenarlo y añadirlo al JList
-        DefaultListModel modeloLista = new DefaultListModel();
-
-        lista.forEach(c -> {
-
-            modeloLista.addElement(c);
-
-        });
-        jList1.setModel(modeloLista);
-
+        refrescar();
     }
 
     /**
@@ -64,11 +63,17 @@ public class Administrador_Contenido extends javax.swing.JFrame {
         botonBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Administración de Contenidos");
+        setTitle("Administrador_GestionContenido");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -87,6 +92,9 @@ public class Administrador_Contenido extends javax.swing.JFrame {
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.setAutoscrolls(false);
+        jList1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(jList1);
 
         botonAgregarPeli.setText("AGREGAR PELICULA");
@@ -121,40 +129,40 @@ public class Administrador_Contenido extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(134, 134, 134))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(tfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botonBuscar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(botonModificar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonAgregarPeli, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonBorrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonAgregarSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(28, 28, 28))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(21, 21, 21)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonBuscar))
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botonBuscar))
+                        .addGap(34, 34, 34)
                         .addComponent(botonAgregarPeli, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(botonAgregarSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,9 +170,9 @@ public class Administrador_Contenido extends javax.swing.JFrame {
                         .addComponent(botonBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(botonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                        .addGap(32, 32, 32))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,64 +186,82 @@ public class Administrador_Contenido extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setSize(new java.awt.Dimension(481, 444));
+        setSize(new java.awt.Dimension(716, 523));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
         principal.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    /**
+     * Método que gestiona el borrado de todos los datos del contenido seleccionado.
+     * @param evt 
+     */
     private void botonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBorrarActionPerformed
 
-        
-        //Borrar todas las calificaciones de los clientes que hayan calificado el contenido que se va a borrar.
-        for (Cliente cliente : GestionClientes.getClientes()) {
+        if (!(jList1.isSelectionEmpty())) {
 
-            if (!(cliente.getCalificaciones().isEmpty())) {
-                for (Calificacion cal : cliente.getCalificaciones()) {
+            //Borrar todas las calificaciones de los clientes que hayan calificado el contenido que se va a borrar.
+            for (Cliente cliente : GestionClientes.getClientes()) {
 
-                    if (cal.getContenidoCalificado().equals(GestionContenido.contenidos.get(jList1.getSelectedIndex()))) {
-                        cliente.getCalificaciones().remove(cal);
-                        break;
+                if (!(cliente.getCalificaciones().isEmpty())) {
+                    for (Calificacion cal : cliente.getCalificaciones()) {
+
+                        if (cal.getContenidoCalificado().equals(GestionContenido.contenidos.get(jList1.getSelectedIndex()))) {
+                            cliente.getCalificaciones().remove(cal);
+                            break;
+                        }
+
                     }
-                        
                 }
             }
+            //Borrar la imagen asociada al contenido de la carpeta de recursos del proyecto para evitar que sea muy pesada.
+            Path ruta = FileSystems.getDefault().getPath("imagenes/"+GestionContenido.contenidos.get(jList1.getSelectedIndex()).getTitulo()+".jpg");
+            try {
+                Files.delete(ruta);
+            } catch (IOException ex) {
+                MostrarError("Error al borrar contenido.",ERROR_MESSAGE);
+            }
+            Contenido c = (Contenido) modeloLista.get(jList1.getSelectedIndex());
+            GestionContenido.contenidos.remove(c);
+            GestionContenido.guardarContenido();
+            refrescar();
         }
-
-        GestionContenido.contenidos.remove(jList1.getSelectedIndex());
-        GestionContenido.guardarContenido();
-        refrescar();
-
     }//GEN-LAST:event_botonBorrarActionPerformed
 
     private void botonAgregarPeliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarPeliActionPerformed
-        AgregarPelicula a = new AgregarPelicula(this);
-        refrescar();
+        OperacionesPelicula a = new OperacionesPelicula(this);
     }//GEN-LAST:event_botonAgregarPeliActionPerformed
 
+    /**
+     * Método que gestiona la modificación de contenidos
+     * @param evt 
+     */
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
 
         if (jList1.isSelectionEmpty()) {
-            //feedback error
+            MostrarError("Seleccione un contenido.",ERROR_MESSAGE);
         } else if (GestionContenido.contenidos.get(jList1.getSelectedIndex()).getClass().equals(Pelicula.class)) {
 
-            ModificarPelicula m = new ModificarPelicula(this, jList1.getSelectedIndex());
+            OperacionesPelicula m = new OperacionesPelicula(this, jList1.getSelectedIndex());
 
         } else if (GestionContenido.contenidos.get(jList1.getSelectedIndex()).getClass().equals(Serie.class)) {
-            ModificarSerie m = new ModificarSerie(this, jList1.getSelectedIndex());
+            OperacionesSerie m = new OperacionesSerie(this, jList1.getSelectedIndex());
         }
-        
+
 
     }//GEN-LAST:event_botonModificarActionPerformed
 
     private void botonAgregarSerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarSerieActionPerformed
-        AgregarSerie a = new AgregarSerie(this);
+        OperacionesSerie a = new OperacionesSerie(this);
     }//GEN-LAST:event_botonAgregarSerieActionPerformed
 
+    /**
+     * Método que gestiona la búsqueda de contenidos
+     * @param evt 
+     */
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
 
         ArrayList<Contenido> resultados = new ArrayList();
@@ -247,10 +273,41 @@ public class Administrador_Contenido extends javax.swing.JFrame {
         disposicionLista(resultados);
     }//GEN-LAST:event_botonBuscarActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+      
+    }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+          refrescar(); 
+    }//GEN-LAST:event_formWindowActivated
+
+    /**
+     * Método que gestiona la actualización de los contenidos de la lista.
+     */
     private void refrescar() {
         //Refrescar la lista
         GestionContenido.cargarContenido();
         disposicionLista(GestionContenido.contenidos);
+    }
+    
+    @Override
+    public final void disposicionLista(ArrayList<Contenido> lista) {
+
+        modeloLista.clear();
+
+        lista.forEach(c -> {
+
+            modeloLista.addElement(c);
+
+        });
+        jList1.setCellRenderer(new PlantillaLista());
+        jList1.setModel(modeloLista);
+
+    }
+
+    @Override
+    public void MostrarError(String textoError , int tipoMensaje) {
+        JOptionPane.showMessageDialog(this, textoError, "Error", tipoMensaje);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAgregarPeli;
@@ -264,4 +321,5 @@ public class Administrador_Contenido extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField tfBuscar;
     // End of variables declaration//GEN-END:variables
+
 }

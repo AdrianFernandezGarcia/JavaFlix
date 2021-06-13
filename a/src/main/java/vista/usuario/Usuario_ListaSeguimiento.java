@@ -5,22 +5,26 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import modelo.Contenido;
-
-public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
+import modelo.ListaContenidos;
+import modelo.PlantillaLista;
+/**
+ * 
+ * @author Adrián Fernández García
+ */
+public class Usuario_ListaSeguimiento extends javax.swing.JFrame implements ListaContenidos {
     
     private final JFrame principal;
 
     /**
      * Constructor
      *
-     * @param v
+     * @param v ventana anterior
      */
     public Usuario_ListaSeguimiento(JFrame v) {
         initComponents();
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
-        this.labelError.setVisible(false);
         disposicionLista(Usuario.usuarioLogueado.getListaSeguimiento());
 
     }
@@ -30,7 +34,8 @@ public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
      *
      * @param contenidos lista a presentar.
      */
-    private void disposicionLista(ArrayList<Contenido> contenidos) {
+    @Override
+    public final void disposicionLista(ArrayList<Contenido> contenidos) {
 
         DefaultListModel modeloLista = new DefaultListModel();
         
@@ -40,7 +45,7 @@ public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
             modeloLista.addElement(c);
 
         });
-
+        jList1.setCellRenderer(new PlantillaLista());
         jList1.setModel(modeloLista);
 
     }
@@ -54,13 +59,12 @@ public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        labelError = new javax.swing.JLabel();
         botonBorrarFavoritos = new javax.swing.JButton();
 
         jLabel2.setText("Filtros");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Lista de Seguimiento");
+        setTitle("Usuario_Favoritos");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -76,11 +80,9 @@ public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.setToolTipText("");
         jScrollPane1.setViewportView(jList1);
-
-        labelError.setForeground(new java.awt.Color(204, 0, 0));
-        labelError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelError.setText("jLabel3");
 
         botonBorrarFavoritos.setText("BORRAR DE FAVORITOS");
         botonBorrarFavoritos.addActionListener(new java.awt.event.ActionListener() {
@@ -101,29 +103,21 @@ public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(botonBorrarFavoritos))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(labelError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap())
+                        .addGap(20, 20, 20)
+                        .addComponent(botonBorrarFavoritos)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botonBorrarFavoritos)
-                        .addGap(141, 141, 141)
-                        .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonBorrarFavoritos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -171,6 +165,5 @@ public class Usuario_ListaSeguimiento extends javax.swing.JFrame {
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelError;
     // End of variables declaration//GEN-END:variables
 }

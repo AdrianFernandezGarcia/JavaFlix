@@ -5,15 +5,24 @@ import controlador.GestionContenido;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import modelo.Calificacion;
 import modelo.Cliente;
 import modelo.Contenido;
+import modelo.ErrorUI;
+import modelo.ListaContenidos;
+import modelo.PlantillaLista;
+/**
+ * 
+ * @author Adrián Fernández García
+ */
+public class Usuario_Busqueda extends javax.swing.JFrame implements ListaContenidos, ErrorUI {
 
-public class Usuario_Busqueda extends javax.swing.JFrame {
-
+    //usuario que ha iniciado sesion
     private final Cliente clienteIniciado = Usuario.usuarioLogueado;
-    private final ArrayList<Contenido> contenidos = GestionContenido.contenidos;
     private final JFrame principal;
+    //modelo del jList
     private final DefaultListModel modeloLista = new DefaultListModel();
     //Flag booleano que determina si el usuario ha realizado una búsqueda o no.
     private boolean buscado = false;
@@ -21,33 +30,31 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
     /**
      * Constructor
      *
-     * @param v
+     * @param v ventana anterior
      */
     public Usuario_Busqueda(JFrame v) {
         initComponents();
         principal = v;
         principal.setVisible(false);
         this.setVisible(true);
-        this.labelError.setVisible(false);
-        disposicionLista(contenidos);
+        disposicionLista(GestionContenido.contenidos);
 
     }
 
     /**
-     * Dispone la lista dada en el JList
+     * Dispone la lista especificada en el JList
      *
      * @param contenidos lista a presentar.
      */
-    private void disposicionLista(ArrayList<Contenido> contenidos) {
+    @Override
+    public final void disposicionLista(ArrayList<Contenido> contenidos) {
 
         //Crear un modelo de lista, rellenarlo y añadirlo al JList
         modeloLista.clear();
 
-        contenidos.forEach(c -> {
-            modeloLista.addElement(c);
+        modeloLista.addAll(contenidos);
 
-        });
-
+        jList1.setCellRenderer(new PlantillaLista());
         jList1.setModel(modeloLista);
 
     }
@@ -71,7 +78,6 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         labelAnio = new javax.swing.JLabel();
         tfAnio = new javax.swing.JFormattedTextField();
         botonBuscar = new javax.swing.JButton();
-        labelError = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
@@ -81,9 +87,12 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         jLabel2.setText("Filtros");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Listado de Contenidos");
+        setTitle("Usuario_Contenidos");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
@@ -113,25 +122,24 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         labelAnio.setText("Año");
 
         botonBuscar.setText("BUSCAR");
+        botonBuscar.setPreferredSize(new java.awt.Dimension(87, 23));
         botonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonBuscarActionPerformed(evt);
             }
         });
 
-        labelError.setForeground(new java.awt.Color(204, 0, 0));
-        labelError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelError.setText("jLabel3");
-
         jSeparator2.setBackground(new java.awt.Color(255, 0, 0));
         jSeparator2.setForeground(new java.awt.Color(204, 0, 0));
 
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 10, 1));
+        jSpinner1.setToolTipText("");
         jSpinner1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel3.setText("Calificación");
 
         botonCalificar.setText("CALIFICAR");
+        botonCalificar.setToolTipText("Pulsa para calificar");
         botonCalificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonCalificarActionPerformed(evt);
@@ -156,70 +164,60 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botonFavoritos))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                                    .addGap(12, 12, 12)
-                                                    .addComponent(labelBusqueda)
-                                                    .addGap(12, 12, 12)
-                                                    .addComponent(tfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addGap(18, 18, 18)
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(tfGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(labelActor)
-                                                .addComponent(labelAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(18, 18, 18)
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(botonBuscar)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(cbGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(tfActor)
-                                                    .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addGap(14, 14, 14)
-                                            .addComponent(jLabel3)
-                                            .addGap(55, 55, 55)
-                                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelActor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(labelAnio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(tfGenero, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
+                                        .addGap(45, 45, 45)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(cbGenero, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(tfActor)
+                                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(17, 17, 17))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel3)
+                                    .addGap(37, 37, 37)
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(labelBusqueda)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addComponent(botonCalificar))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(botonFavoritos)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                                .addGap(94, 94, 94)
+                                .addComponent(botonCalificar))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(94, 94, 94)
+                                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(76, 76, 76)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(botonFavoritos)
-                        .addGap(0, 29, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelBusqueda)
-                            .addComponent(tfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(tfBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelBusqueda))
+                        .addGap(26, 26, 26)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfGenero)
                             .addComponent(cbGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,12 +226,12 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
                             .addComponent(labelActor)
                             .addComponent(tfActor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelAnio)
-                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41)
-                        .addComponent(botonBuscar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelAnio))
+                        .addGap(29, 29, 29)
+                        .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -241,8 +239,12 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addComponent(botonCalificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelError)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 37, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonFavoritos)))
                 .addContainerGap())
         );
 
@@ -263,6 +265,9 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Método que gestiona la búsqueda de contenidos.
+     */
     private void realizarBusqueda() {
 
         ArrayList<Contenido> busquedaPalabraClave = new ArrayList();
@@ -397,73 +402,53 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
      */
     private void botonCalificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCalificarActionPerformed
         boolean calificado = false;
-        Calificacion calificacion = null;
+        Calificacion calificacion;
 
-        //Primero comprobar que no se haya buscado
-        //Esto es necesario porque al buscar los índices se desincronizan con la lista y se referenciarían objetos erróneos.
-        if (buscado) {
-            for (Contenido c : GestionContenido.contenidos) {
-
-                for (Object co : modeloLista.toArray()) {
-                    if (c.equals((Contenido) co)) {
-                        calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, (Contenido) co);
-                    }
-
-                }
-            }
-        } //Si no se ha buscado, referenciar el indice de la JList para crear el objeto
-        else {
-            calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, contenidos.get(jList1.getSelectedIndex()));
-        }
-
-        if (jList1.isSelectionEmpty() || calificacion == null) {
-            //error
+        if (jList1.isSelectionEmpty()) {
+            MostrarError("Seleccione un contenido para calificarlo", ERROR_MESSAGE);
         } //Si el cliente no había calificado nada antes 
         else if (clienteIniciado.getCalificaciones().isEmpty()) {
+            calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, (Contenido) modeloLista.get(jList1.getSelectedIndex()));
             agregarCalificacion(calificacion);
+            //calcular la nota media del contenido calificado.
+            calcularMediaCalificacion(calificacion.getContenidoCalificado());
         } else {
 
-            for (Calificacion contenido : clienteIniciado.getCalificaciones()) {
-                //Comprobar que el cliente no haya calificado antes el mismo contenido.
-                //Si esto ocurre, se modificará la calificación en vez de añadirla de nuevo a a la lista.
-                if (contenido.equals(calificacion)) {
+            calificacion = new Calificacion((Integer) jSpinner1.getValue(), Usuario.usuarioLogueado, (Contenido) modeloLista.get(jList1.getSelectedIndex()));
+
+            Contenido c = (Contenido) modeloLista.get(jList1.getSelectedIndex());
+
+            //cambiar la puntuación de la calificación en la lista del cliente y en la de los contenidos.
+            for (Calificacion cal : c.getCalificaciones()) {
+
+                if (cal.equals(calificacion)) {
+                    //actualizar puntuacion
+                    cal.setPuntuacion((Integer) jSpinner1.getValue());
                     calificado = true;
                 }
-                //Si el cliente no ha calificado el contenido seleccionado.
 
             }
 
-            if (!calificado) {
-                agregarCalificacion(calificacion);
-
-            }
-
-            //Recorrer y comprobar ambas listas y sobreescribir puntuaciones.
-            if (calificado) {
-
-                //modificar la calificación de las listas de clientes.
-                clienteIniciado.getCalificaciones().forEach((cal) -> {
+            for (Calificacion cal : clienteIniciado.getCalificaciones()) {
+                if (cal.equals(calificacion)) {
                     cal.setPuntuacion((Integer) jSpinner1.getValue());
-                });
-
-                //modificar la calificación de las listas de contenidos.
-                contenidos.forEach((contenido) -> {
-                    contenido.getCalificaciones().stream().filter((calificacionContenido) -> (calificacionContenido.equals(calificacionContenido))).forEachOrdered((cal) -> {
-                        cal.setPuntuacion((Integer) jSpinner1.getValue());
-                    });
-                });
-
+                }
             }
 
-            //modificar la nota media del contenido calificado
+            //Si es una nueva calificación, entonces agregarla a las listas.
+            if (!calificado) {
+                clienteIniciado.getCalificaciones().add(calificacion);
+                c.getCalificaciones().add(calificacion);
+            }
+            //volver a calcular la nota media del contenido calificado.
             calcularMediaCalificacion(calificacion.getContenidoCalificado());
-            //guardar cambios en los ficheros correspondientes
-            guardarCambiosCalificacion();
-            disposicionLista(contenidos);
-
+            buscado = false;
         }
 
-
+        //guardar cambios en los ficheros correspondientes
+        guardarCambiosCalificacion();
+        GestionContenido.cargarContenido();
+        disposicionLista(GestionContenido.contenidos);
     }//GEN-LAST:event_botonCalificarActionPerformed
 
     /**
@@ -486,12 +471,12 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
         }
         //cambiar la nota media del contenido dividiendo la puntuación total entre el número de clientes que lo han calificado.
         contenido.setMediaPuntuaciones(calificacionTotal / numResultados);
-        contenidos.set(jList1.getSelectedIndex(), contenido);
+
     }
 
     private void agregarCalificacion(Calificacion calificacionAgregar) {
         clienteIniciado.getCalificaciones().add(calificacionAgregar);
-        contenidos.get(jList1.getSelectedIndex()).getCalificaciones().add(calificacionAgregar);
+        GestionContenido.contenidos.get(jList1.getSelectedIndex()).getCalificaciones().add(calificacionAgregar);
 
     }
 
@@ -510,6 +495,14 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
          principal.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+
+    }//GEN-LAST:event_formWindowActivated
+
+    @Override
+    public void MostrarError(String textoError, int tipoMensaje) {
+        JOptionPane.showMessageDialog(this, textoError, "Error", tipoMensaje);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonBuscar;
@@ -528,10 +521,10 @@ public class Usuario_Busqueda extends javax.swing.JFrame {
     private javax.swing.JLabel labelActor;
     private javax.swing.JLabel labelAnio;
     private javax.swing.JLabel labelBusqueda;
-    private javax.swing.JLabel labelError;
     private javax.swing.JTextField tfActor;
     private javax.swing.JFormattedTextField tfAnio;
     private javax.swing.JTextField tfBusqueda;
     private javax.swing.JLabel tfGenero;
     // End of variables declaration//GEN-END:variables
+
 }

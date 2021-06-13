@@ -1,12 +1,19 @@
 package vista.usuario;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import modelo.Cliente;
-
+/**
+ * 
+ * @author Adrián Fernández García
+ */
 public class Usuario extends javax.swing.JFrame {
 
     private final JFrame principal;
+    //usuario que ha iniciado sesion
     protected static Cliente usuarioLogueado;
+
     public Usuario(JFrame v, Cliente c) {
         initComponents();
         principal = v;
@@ -15,7 +22,6 @@ public class Usuario extends javax.swing.JFrame {
         usuarioLogueado = c;
         labelTitulo.setText("Bienvenido, " + c.getNombre());
 
-        
     }
 
     /**
@@ -34,7 +40,7 @@ public class Usuario extends javax.swing.JFrame {
         botonFavoritos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Menú de Usuario");
+        setTitle("JavaFlix-Usuario");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -129,11 +135,22 @@ public class Usuario extends javax.swing.JFrame {
     }//GEN-LAST:event_botonSuscripcionActionPerformed
 
     private void botonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarActionPerformed
-        Usuario_Busqueda u = new Usuario_Busqueda(this);
+        if (usuarioLogueado.getSuscripcion() == null) {
+            JOptionPane.showMessageDialog(this, "Para acceder primero debe suscribirse.", "Error", ERROR_MESSAGE);
+        } else {
+            Usuario_Busqueda u = new Usuario_Busqueda(this);
+        }
+
     }//GEN-LAST:event_botonBuscarActionPerformed
 
     private void botonFavoritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFavoritosActionPerformed
-        Usuario_ListaSeguimiento u= new Usuario_ListaSeguimiento(this);
+        
+        if (usuarioLogueado.getSuscripcion() == null) {
+            JOptionPane.showMessageDialog(this, "Para acceder primero debe suscribirse.", "Error", ERROR_MESSAGE);
+        } else {
+            Usuario_ListaSeguimiento u = new Usuario_ListaSeguimiento(this);
+        }
+        
     }//GEN-LAST:event_botonFavoritosActionPerformed
 
 

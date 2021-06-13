@@ -5,13 +5,14 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 
 /**
  *
  * @author Adrián Fernández García
  */
-public interface ErrorUI {
+public interface ListaContenidos {
     
-    public void MostrarError( String textoError, int tipoMensaje);
+    public void disposicionLista(ArrayList<Contenido> lista);
     
 }

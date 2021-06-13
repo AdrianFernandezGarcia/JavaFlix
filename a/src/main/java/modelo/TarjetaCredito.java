@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernández García
  */
 public class TarjetaCredito implements Serializable{
     

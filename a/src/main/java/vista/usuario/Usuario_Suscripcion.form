@@ -3,7 +3,7 @@
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="Sacar"/>
+    <Property name="title" type="java.lang.String" value="Usuario_Suscripci&#xf3;n"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -64,14 +64,9 @@
                       <Component id="botonSuscripcion" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="117" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="tfSaldo" min="-2" pref="100" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                          <Component id="botonSaldo" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="labelError" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="tfSaldo" min="-2" pref="100" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                  <Component id="botonSaldo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
@@ -94,10 +89,7 @@
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Component id="cbSuscripcion" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="botonSuscripcion" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelError" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="botonSuscripcion" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -133,15 +125,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tfSaldo">
-        </Component>
-        <Component class="javax.swing.JLabel" name="labelError">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" red="cc" type="rgb"/>
-            </Property>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="jLabel1"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbSuscripcion">
           <Properties>

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Adrián
+ * @author Adrián Fernández García
  */
 public class Capitulo implements Serializable{
     
